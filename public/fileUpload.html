@@ -1,0 +1,140 @@
+<!-- uploadForm.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Form</title>
+</head>
+<body>
+    <h2>Upload Image and Audio Files</h2>
+    <!-- <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="POST">
+        <label for="userId">Enter your ID:</label>
+        <input type="text" id="userId" name="userId" required><br><br>
+
+        <label for="images">Select image files:</label>
+        <input type="file" id="images" name="images" accept="image/*" multiple><br><br>
+
+        <label for="audio">Select audio files:</label>
+        <input type="file" id="audio" name="audio" accept="audio/*" multiple><br><br>
+
+        <button type="submit">Upload</button>
+    </form> -->
+
+
+    <form id="media-form" name="media-form" enctype="multipart/form-data" action="/upload" method="POST">
+        <div class="input-grp hidden">
+            <input type="text" id="gameId" name="gameId" value="12345"> 
+        </div>
+        <div class="input-grp">
+            <label for="image-picker">Upload images files</label>
+            <input type="file" id="image-picker" accept="image/*" multiple required/>
+            <div id="image-preview" class="preview"></div>
+        </div>
+        <div class="input-grp">
+            <label for="audio-picker">Upload audio files</label>
+            <input type="file" id="audio-picker" accept="audio/*" multiple required/>
+            <div id="audio-preview" class="preview"></div>
+        </div>
+        <div class="button-grp">
+            <button type="submit" id="submit-media" class="primary-button">Submit</button>
+            <button type="button" id="cancel-media" class="secondary-button">Cancel</button>
+        </div>
+    </form>
+
+
+
+    <h2>View Uploaded Files by User ID</h2>
+    <form id="viewFilesForm" method="GET">
+        <label for="userId_v">Enter your ID:</label>
+        <input type="text" id="userId_v" name="userId_v" required><br><br>
+        <button type="submit">View Files</button>
+    </form>
+
+    <h3>Uploaded Images</h3>
+    <div id="imageFiles"></div>
+
+    <h3>Uploaded Audio Files</h3>
+    <div id="audioFiles"></div>
+
+    <script>
+        document.getElementById('viewFilesForm').onsubmit = async (event) => {
+            event.preventDefault();
+            const userId = document.getElementById('userId_v').value;
+
+            const response = await fetch(`/files/${userId}`);
+            const files = await response.json();
+            console.log(files)
+            // Display image files
+            const imageContainer = document.getElementById('imageFiles');
+            imageContainer.innerHTML = ''; // Clear previous content
+            files.images.forEach(image => {
+                const img = document.createElement('img');
+                img.src = `uploads/${image}`;
+                img.alt = image;
+                img.style.width = '200px';
+                imageContainer.appendChild(img);
+            });
+
+            // Display audio files
+            const audioContainer = document.getElementById('audioFiles');
+            audioContainer.innerHTML = ''; // Clear previous content
+            files.audio.forEach(audio => {
+                const audioElement = document.createElement('audio');
+                audioElement.src = `../server/uploads/${audio}`;
+                audioElement.controls = true;
+                audioContainer.appendChild(audioElement);
+            });
+
+            // const response = await fetch(`/image/${userId}`);
+
+        };
+    </script>
+</body>
+<script>
+    document.getElementById('media-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const form = event.target;
+    const formData = new FormData(form);  // Create a FormData object with the form data
+
+    // Retrieve files from input fields and append them to the FormData object
+    const imageFiles = document.getElementById('image-picker').files;
+    const audioFiles = document.getElementById('audio-picker').files;
+
+    // Append each file (images and audio) to the FormData object
+    for (let i = 0; i < imageFiles.length; i++) {
+        formData.append('images[]', imageFiles[i]);
+    }
+
+    for (let i = 0; i < audioFiles.length; i++) {
+        formData.append('audios[]', audioFiles[i]);
+    }
+
+    try {
+        // Make an asynchronous POST request using the Fetch API
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const result = await response.text();  // Assuming the server returns a JSON response
+            console.log('Upload successful:', result);
+        } else {
+            throw new Error('Upload failed');
+        }
+    } catch (error) {
+        console.log('Error:', error);
+        alert('Error uploading files');
+    }
+});
+
+// Optionally handle the cancel button click event
+document.getElementById('cancel-media').addEventListener('click', () => {
+    document.getElementById('media-form').reset();  // Clear the form inputs
+});
+
+
+</script>
+</html>

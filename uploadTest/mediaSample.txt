@@ -1,0 +1,62 @@
+[
+    {
+        "type" : "mcq",
+        "que_en" : "What is the capital of India?",
+        "que_hi" : "भारत की राजधानी क्या है?",
+        "op1" : "Kolkata / कोलकाता",
+        "op2" : "New Delhi / नई दिल्ली",
+        "op3" : "Mumbai / मुंबई",
+        "op4" : "Bengaluru / बेंगलुरु",
+        "correct" : 2 ,
+		"media" : {
+			"image" : "que_1_img.jpg"
+		}
+    },
+    {
+        "type": "mcq",
+        "que_en": "Who wrote the national anthem of India?",
+        "que_hi": "भारत का राष्ट्रीय गान किसने लिखा?",
+        "op1": "Rabindranath Tagore / रवींद्रनाथ टैगोर",
+        "op2": "Mahatma Gandhi / महात्मा गांधी",
+        "op3": "Subhash Chandra Bose / सुभाष चंद्र बोस",
+        "op4": "Bankim Chandra Chattopadhyay / बंकिम चंद्र चट्टोपाध्याय",
+        "correct": 1,
+		"media": {
+			"image" : "que_2_img.png"
+		}
+    },
+    {
+        "type": "mcq",
+        "que_en": "Which is the largest continent in the world?",
+        "que_hi": "दुनिया का सबसे बड़ा महाद्वीप कौन सा है?",
+        "op1": "Africa / अफ्रीका",
+        "op2": "Asia / एशिया",
+        "op3": "Europe / यूरोप",
+        "op4": "North America / उत्तर अमेरिका",
+        "correct": 2,
+		"media" : {
+			"audio" : "audioFirst.mp3"
+		}
+    },
+    {
+        "type" : "buzzer",
+        "que_en" : "What is the capital of India?",
+        "que_hi" : "भारत की राजधानी क्या है?",
+        "correct" : "New Delhi / नई दिल्ली" ,
+		"media" : {
+			"audio" : "audioFirst.mp3"
+		}
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Which element has the chemical symbol 'O'?",
+        "que_hi": "किस तत्व का रासायनिक प्रतीक 'O' है?",
+        "correct": "Oxygen / ऑक्सीजन"
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Which gas is most abundant in the Earth's atmosphere?",
+        "que_hi": "पृथ्वी के वायुमंडल में सबसे अधिक मात्रा में कौन सी गैस है?",
+        "correct": "Nitrogen / नाइट्रोजन"
+    }
+]

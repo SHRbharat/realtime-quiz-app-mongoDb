@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Dashboard | KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/common.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="../../css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="../../css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <div class="header-info">
+            <div class="left">
+                <p>Players &nbsp;&nbsp;&nbsp;&nbsp;: <span>00</span></p>
+                <p>Answered : <span>00</span></p>
+            </div>
+            <div class="line"></div>
+            <div class="right">
+                <p>Round &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>1/2</span></p>
+                <p>Questions : <span>20</span></p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="rotating-image">
+            <img src="../../css/assets/floral-1.png" alt="">
+        </div>
+        <section class="main-display flex-section">
+            <div class="left-panel">
+                <div class="question-card">
+                    <div class="marks-container">
+                        <div class="circle positive">10</div>
+                        <div class="circle negative">05</div>
+                    </div>
+                    <div class="que-header">
+                        <div class="circle count">01</div>
+                    </div>
+                    <div class="que-body">
+                        <div class="text">
+                            <p class="hindi">भारत की राजधानी क्या है?</p>
+                            <p class="english">What is the capital of India?</p>
+                            <!-- only appears for some questions -->
+                            <audio controls>
+                                <source src="" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="image-wrapper">
+                            <!-- only appears for some questions -->
+                            <img src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="option-panel">
+                    <div class="option">op1</div>
+                    <div class="option">op2</div>
+                    <div class="option">op3</div>
+                    <div class="option">op4</div>
+                </div>
+                <div class="buzzer-details hidden"></div>
+            </div>
+            <div class="right-panel">
+                <div class="timer">
+                    <div class="time-remaining" id="time-display">60</div>
+                </div>
+                <div class="control-strip">
+                    <!-- aria-label is used in js to identify functionality of 3rd button -->
+                    <button id="view-leader" aria-label="Leaderboard" title="Leaderboard"><i class="fa-solid fa-award"></i></button>
+                    <button id="next-question" aria-label="Next Question" title="Next Question"><i class="fa-solid fa-angles-right"></i></button>
+                    <button id="end-button" class="hidden" aria-label="End Quiz" title="End Quiz"><i class="fa-solid fa-check"></i></button>
+                    <button id="view-response" aria-label="View Answers" title="View Answers"><i class="fa-regular fa-eye"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="leaderboard-section">
+        <div class="hide-leaderboard" id="hide-leaderboard"><i class="fa-solid fa-xmark"></i></div>
+        <div class="leaderboard-wrapper">
+            <p>LEADERBOARD</p>
+            <div class="tab-menu">
+                <div class="overall active">Overall</div>
+                <div class="buzzer-round">Buzzer</div>
+                <div class="mcq-round">MCQ</div>
+            </div>
+            <div class="leaderboard-items overall-tab active">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>1080 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Vikas Kumar</span>
+                    <span>1060 Pts</span>
+                </div>
+                <div class="item">
+                    <span>03.</span>
+                    <span>Somnath</span>
+                    <span>1040 Pts</span>
+                </div>
+            </div>
+            <div class="leaderboard-items buzzer-tab">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>540 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Somnath</span>
+                    <span>530 Pts</span>
+                </div>
+            </div>
+            <div class="leaderboard-items mcq-tab">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>540 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Vikas Kumar</span>
+                    <span>530 Pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="responses-section">
+        <div class="hide-responses"><i class="fa-solid fa-xmark"></i></div>
+        <div class="wrapper">
+            <div class="answer"><p>Answer</p></div>
+            <div class="mcq-response-display ">
+                <p>Responses by Participants</p>
+                <div class="item">
+                    <span>01</span>
+                    <span>Shivam Ray</span>
+                    <span>Answer</span>
+                    <span><i class="fa-solid fa-circle-check"></i></span>
+                </div>
+                <div class="item">
+                    <span>02</span>
+                    <span>Vikas</span>
+                    <span>Answer</span>
+                    <span><i class="fa-solid fa-circle-xmark"></i></span>
+                </div>
+                <div class="item">
+                    <span>03</span>
+                    <span>Somnath</span>
+                    <span>Answer</span>
+                    <span><i class="fa-solid fa-comment-slash"></i></span>
+                </div>
+            </div>
+            <div class="buzzer-response-display active">
+                <p>The answer from <span>Shivam</span> was:</p>
+                <button id="correct-buzzer"><i class="fa-solid fa-circle-check"></i></button>
+                <button id="incorrect-buzzer"><i class="fa-solid fa-circle-xmark"></i></button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- confirmation box -->
+    <div class="div-confirmation-outer" id="confirmationBox">
+        <div class="div-confirmation-box">
+        <h2 class="div-confirmation-title">Are you sure?</h2>
+        <p class="div-confirmation-message">Do you really want to proceed with this action?</p>
+        <div class="div-confirmation-actions">
+            <button class="div-confirmation-btn div-confirmation-confirm">Confirm</button>
+            <button class="div-confirmation-btn div-confirmation-cancel">Cancel</button>
+        </div>
+        </div>
+    </div>
+    
+    <div id="toast-container"></div>
+
+    <!-- java-script -->
+    <script src="../../socket.io/socket.io.js"></script>
+    <script src="../../js/libs/jqueryLibrary.js"></script>
+    <script src="../../js/libs/deparam.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/hostGame.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+
+/* Confirmation Box Outer Overlay */
+.div-confirmation-outer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+}
+
+/* Confirmation Box Style */
+.div-confirmation-box {
+    background-color: #f4a300;
+    /* Saffron */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    color: white;
+}
+
+/* Title */
+.div-confirmation-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Message */
+.div-confirmation-message {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Action Buttons */
+.div-confirmation-actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.div-confirmation-btn {
+    background-color: white;
+    color: #f4a300;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.div-confirmation-btn:hover {
+    background-color: #e68a00;
+}
+
+.div-confirmation-confirm {
+    background-color: #f4a300;
+    color: white;
+}
+
+.div-confirmation-confirm:hover {
+    background-color: #e68a00;
+}
+
+.div-confirmation-cancel {
+    background-color: white;
+    color: #f4a300;
+}
+
+.div-confirmation-cancel:hover {
+    background-color: #e68a00;
+    color: white;
+}
+
+/* toast notifications */
+/* Toast Container */
+#toast-container {
+    position: fixed;
+    bottom : 20px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Toast Base Style */
+.toast {
+    min-width: 250px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    font-size: 16px;
+}
+
+/* Success Toast */
+.toast-success {
+    background-color: #28a745;
+}
+
+/* Error Toast */
+.toast-error {
+    background-color: #dc3545;
+}
+
+/* Show Toast */
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}

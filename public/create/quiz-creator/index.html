@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Game | KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/common.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="../../css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="../../css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <div class="button-container">
+            <a href="create/" class="text-inter-lg" id="host">Host a Game!</a>
+            <button class="nav-button primary-button text-inter-lg" id="createGame">Create Game <i
+                    class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </header>
+
+
+    <section class="create-section flex-section">
+        <div class="create-form">
+            <h4>Create your game here!</h4>
+            <form id="create-room-form" name="create-room-form">
+                <div class="input-grp">
+                    <label id="quizTitle">Quiz Title</label>
+                    <input id="name" type="text" name="name" placeholder="Enter quiz name" autofocus/>
+                </div>
+                <div class="input-grp">
+                    <label for="quiz-type">Select Quiz Type:</label>
+                    <select id="quiz-type" name="quiz-type" required>
+                        <option value="single-mcq">Single Round - MCQ</option>
+                        <option value="single-buzzer">Single Round - Buzzer</option>
+                        <option value="mcq-then-buzzer">First MCQ, Then Buzzer</option>
+                        <option value="buzzer-then-mcq">First Buzzer, Then MCQ</option>
+                    </select>
+                </div>
+                <div class="input-grp">
+                    <label for="file-picker">Upload File (Text or JSON):</label>
+                    <input id="file-picker" type="file" name="file" accept=".txt, .json" required />
+                </div>
+                <div class="input-grp">
+                    <label>Time for question (seconds)</label>
+                    <input id="time" type="number" maxlength="3" min="10" max="300" placeholder="30" required />
+                </div>
+                <div class ="input-grp">
+                    <label for="mcq-positive">Marks for MCQ response</label>
+                    <div class="mcq-wrapper">
+                        <input id="mcq-positive" type="number" placeholder="10" min="0" required />
+                        <input id="mcq-negative" type="number" placeholder="5" min="0" required />
+                    </div>
+                </div>
+                <div class="input-grp">
+                    <label for="buzzer-positive">Marks for buzzer response</label>
+                    <div class="buzzer-wrapper">
+                        <input id="buzzer-positive" type="number" placeholder="10" min="0" required />
+                        <input id="buzzer-negative" type="number" placeholder="5" min="0" required />
+                    </div>
+                </div>
+
+                <div class="button-grp">
+                    <button id="create-quiz" disabled>Create Quiz</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+    <div id="popup-overlay" class="popup-overlay hidden">
+        <div id="popup-window" class="popup-window">
+            <h4>Upload media files</h4>
+            <form id="media-form" name="media-form" enctype="multipart/form-data" action="/upload" method="POST">
+                <div class="input-grp hidden">
+                    <input type="text" id="gameId" name="gameId" value="12345"> 
+                </div>
+                <div class="input-grp">
+                    <label for="image-picker">Upload images files</label>
+                    <input type="file" id="image-picker" accept="image/*" multiple required/>
+                    <div id="image-preview" class="preview"></div>
+                </div>
+                <div class="input-grp">
+                    <label for="audio-picker">Upload audio files</label>
+                    <input type="file" id="audio-picker" accept="audio/*" multiple required/>
+                    <div id="audio-preview" class="preview"></div>
+                </div>
+                <div class="button-grp">
+                    <button type="submit" id="submit-media" class="primary-button">Submit</button>
+                    <button type="button" id="cancel-media" class="secondary-button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <div class="info-btn"><i class="fa-solid fa-info"></i></div>
+    <div id="toast-container"></div>
+
+
+    <script src="../../socket.io/socket.io.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/quizCreator.js"></script>
+    <script>
+            document.getElementById('media-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const form = event.target;
+    const formData = new FormData(form);  // Create a FormData object with the form data
+
+    // Retrieve files from input fields and append them to the FormData object
+    const imageFiles = document.getElementById('image-picker').files;
+    const audioFiles = document.getElementById('audio-picker').files;
+
+    // Append each file (images and audio) to the FormData object
+    for (let i = 0; i < imageFiles.length; i++) {
+        formData.append('images[]', imageFiles[i]);
+    }
+
+    for (let i = 0; i < audioFiles.length; i++) {
+        formData.append('audios[]', audioFiles[i]);
+    }
+
+    try {
+        // Make an asynchronous POST request using the Fetch API
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const result = await response.text();  // Assuming the server returns a JSON response
+            console.log('Upload successful:', result);
+        } else {
+            throw new Error('Upload failed');
+        }
+    } catch (error) {
+        console.log('Error:', error);
+        alert('Error uploading files');
+    }
+});
+
+// Optionally handle the cancel button click event
+document.getElementById('cancel-media').addEventListener('click', () => {
+    document.getElementById('media-form').reset();  // Clear the form inputs
+});
+
+    </script>
+</body>
+
+</html>

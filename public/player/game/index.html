@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Dashboard | KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/common.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="../../css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="../../css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <div class="header-info">
+            <div class="left">
+                <p>Name &nbsp;&nbsp;&nbsp;&nbsp;: <span>00</span></p>
+                <p>Score : <span>00</span></p>
+            </div>
+            <div class="line"></div>
+            <div class="right">
+                <p>Round &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>1/2</span></p>
+                <p>Questions : <span>20</span></p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="rotating-image">
+            <img src="../../css/assets/floral-1.png" alt="">
+        </div>
+        <section class="main-display flex-section">
+            <div class="left-panel">
+                <div class="question-card">
+                    <div class="marks-container">
+                        <div class="circle positive">10</div>
+                        <div class="circle negative">05</div>
+                    </div>
+                    <div class="que-header">
+                        <div class="circle count">01</div>
+                    </div>
+                    <div class="que-body">
+                        <div class="text">
+                            <p class="hindi">भारत की राजधानी क्या है?</p>
+                            <p class="english">What is the capital of India?</p>
+                            <!-- only appears for some questions -->
+                            <audio controls>
+                                <source src="" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="image-wrapper">
+                            <!-- only appears for some questions -->
+                            <img src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="option-panel">
+                    <div class="option" id="answer1">op1</div>
+                    <div class="option" id="answer1">op2</div>
+                    <div class="option" id="answer1">op3</div>
+                    <div class="option" id="answer1">op4</div>
+                    <div class="buzzer-btn hidden" id="buzzer-btn">PRESS BUZZER</div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="timer">
+                    <div class="time-remaining" id="time-display">60</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- confirmation box -->
+    <div class="div-confirmation-outer" id="confirmationBox">
+        <div class="div-confirmation-box">
+        <h2 class="div-confirmation-title">Are you sure?</h2>
+        <p class="div-confirmation-message">Do you really want to proceed with this action?</p>
+        <div class="div-confirmation-actions">
+            <button class="div-confirmation-btn div-confirmation-confirm">Confirm</button>
+            <button class="div-confirmation-btn div-confirmation-cancel">Cancel</button>
+        </div>
+        </div>
+    </div>
+    
+    <div id="toast-container"></div>
+
+    <!-- java-script -->
+    <script src = "../../socket.io/socket.io.js"></script>
+    <script src = "../../js/libs/jqueryLibrary.js"></script>
+    <script src = "../../js/libs/deparam.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src = "../../js/playerGame.js"></script>
+</body>
+</html>

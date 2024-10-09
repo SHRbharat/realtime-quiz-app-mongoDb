@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Lobby | KNIT</title>
+  <!-- google fonts - dm sans , inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+  <!-- font-awesome icons  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- page stylesheet -->
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/common.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="nav-logo-container">
+      <a href="#" class="nav-logo"><img src="../css/assets/knit.png"></a>
+      <div class="vertical-line"></div>
+      <a href="#" class="nav-logo"><img src="../css/assets/bvp_c.png"></a>
+      <div class="header-text">भारत विकास परिषद</div>
+    </div>
+    <!-- <div class="button-container">
+      <a href="create/" class="text-inter-lg" id="host">Host a Game!</a>
+      <button class="nav-button primary-button text-inter-lg" id="createGame">Create Game <i
+          class="fa-solid fa-arrow-right"></i></button>
+    </div> -->
+  </header>
+
+  <!-- Main Section-->
+  <section class="player-lobby-section flex-section">
+    <div class="left-section">
+      <h4>Game Details</h4>
+      <div class="info">
+        <div class="details-row">
+          <span>Name:</span>
+          <span>John Doe</span>
+        </div>
+        <div class="details-row">
+          <span>Question Type:</span>
+          <span>MCQ</span>
+        </div>
+        <div class="details-row">
+          <span>MCQs:</span>
+          <span>10</span>
+        </div>
+        <div class="details-row">
+          <span>Buzzer Questions:</span>
+          <span>5</span>
+        </div>
+        <div class="details-row">
+          <span>Time:</span>
+          <span>15 min</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="right-section">
+      <h4>Starting Game</h4>
+      <div class="loader-wrapper">
+        <div class="loader"></div>
+        <p>Waiting for the host to start the quiz ...</p>
+        <button id="leave-game">Leave Game!</button>
+      </div>
+    </div>
+  </section>
+    
+  <div class="info-btn"><i class="fa-solid fa-info"></i></div>
+  <div id="toast-container"></div>
+
+  <div class="ice-cubes">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <script src = "../socket.io/socket.io.js"></script>
+  <script src = "../js/libs/jqueryLibrary.js"></script>
+  <script src = "../js/libs/deparam.js"></script>
+  <script src = "../js/lobby.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Game | KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/common.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <div class="button-container">
+            <a href="create/" class="text-inter-lg" id="host">Host a Game!</a>
+            <button class="nav-button primary-button text-inter-lg" id="createGame">Create Game <i
+                    class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </header>
+
+
+    <section class="login-section flex-section">
+        <div class="form-panel">
+            <h4>Join a Game</h4>
+            <form action="/player/" id="login-form">
+                <div class="input-grp">
+                    <label for="pin">Game Pin</label>
+                    <input type="number" name="pin" id="pin" placeholder="Enter game pin" autofocus>
+                </div>
+                <div class="input-grp">
+                    <label for="name">Display Name</label>
+                    <input type="text" name="name" id="name" placeholder="Enter your display name">
+                </div>
+                <div class="button-grp">
+                    <button id="joinButton" name="joinButton" class="text-inter-sm" disabled>Join Game</button>
+                </div>
+            </form>
+        </div>
+        <div class="img-panel">
+            <div class="info">
+                <h3><span>भारत </span>को जानो</h3>
+                <p>भारतीय इतिहास, संस्कृति, सामान्य ज्ञान प्रश्नोत्तरी</p>
+            </div>
+            <div class="img-container">
+                <img src="css/assets/slide1.png" id="slideImage">
+            </div>
+        </div>
+    </section>
+
+    <div class="info-btn"><i class="fa-solid fa-info"></i></div>
+
+
+    <div id="toast-container"></div>
+
+    <!-- java-script -->
+    <script src = "../socket.io/socket.io.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+
+
+</html>

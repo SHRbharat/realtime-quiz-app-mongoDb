@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Dashboard| KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="public/css/dashboard.css">
+    <link rel="stylesheet" href="public/css/common.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <div class="header-info">
+            <div class="left">
+                <p>Players &nbsp;&nbsp;&nbsp;&nbsp;: <span>00</span></p>
+                <p>Answered : <span>00</span></p>
+            </div>
+            <div class="line"></div>
+            <div class="right">
+                <p>Questions : <span>20</span></p>
+                <p>Round &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>1/2</span></p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="rotating-image">
+            <img src="public/css/assets/floral-1.png" alt="">
+        </div>
+        <section class="main-display flex-section">
+            <div class="left-panel">
+                <div class="question-card">
+                    <div class="marks-container">
+                        <div class="circle positive">10</div>
+                        <div class="circle negative">05</div>
+                    </div>
+                    <div class="que-header">
+                        <div class="circle count">01</div>
+                    </div>
+                    <div class="que-body">
+                        <div class="text">
+                            <p class="hindi">भारत की राजधानी क्या है?</p>
+                            <p class="english">What is the capital of India?</p>
+                            <!-- only appears for some questions -->
+                            <audio controls>
+                                <source src="public/css/assets/audioSec.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="image-wrapper">
+                            <!-- only appears for some questions -->
+                            <img src="public/css/assets/back2.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="option-panel">
+                    <div class="option">op1</div>
+                    <div class="option">op2</div>
+                    <div class="option">op3</div>
+                    <div class="option">op4</div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="timer">
+                    <div class="time-remaining" id="time-display">60</div>
+                </div>
+                <div class="control-strip">
+                    <button id="view-leader"><i class="fa-solid fa-award"></i></button>
+                    <button id="next-question">
+                        <i class="fa-solid fa-angles-right"></i>
+                        <i class="fa-solid fa-check" style="display: none;"></i>
+                    </button>
+                    <button id="view-response"><i class="fa-regular fa-eye"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="leaderboard-section">
+        <div class="hide-leaderboard" id="hide-leaderboard"><i class="fa-solid fa-xmark"></i></div>
+        <div class="leaderboard-wrapper">
+            <p>LEADERBOARD</p>
+            <div class="tab-menu">
+                <div class="overall active">Overall</div>
+                <div class="buzzer-round">Buzzer</div>
+                <div class="mcq-round">MCQ</div>
+            </div>
+            <div class="leaderboard-items overall-tab active">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>1080 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Vikas Kumar</span>
+                    <span>1060 Pts</span>
+                </div>
+                <div class="item">
+                    <span>03.</span>
+                    <span>Somnath</span>
+                    <span>1040 Pts</span>
+                </div>
+            </div>
+            <div class="leaderboard-items buzzer-tab">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>540 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Somnath</span>
+                    <span>530 Pts</span>
+                </div>
+            </div>
+            <div class="leaderboard-items mcq-tab">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>540 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Vikas Kumar</span>
+                    <span>530 Pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="responses-section">
+        <div class="hide-responses"><i class="fa-solid fa-xmark"></i></div>
+        <div class="wrapper">
+            <div class="answer"><p>Answer</p></div>
+            <div class="mcq-response-display ">
+                <p>Responses by Participants</p>
+                <div class="item">
+                    <span>01</span>
+                    <span>Shivam Ray</span>
+                    <span><i class="fa-solid fa-circle-check"></i></span>
+                </div>
+                <div class="item">
+                    <span>02</span>
+                    <span>Vikas</span>
+                    <span><i class="fa-solid fa-circle-xmark"></i></span>
+                </div>
+                <div class="item">
+                    <span>03</span>
+                    <span>Somnath</span>
+                    <span><i class="fa-solid fa-circle-check"></i></span>
+                </div>
+            </div>
+            <div class="buzzer-response-display active">
+                <p>The answer from <span>Shivam</span> was:</p>
+                <button id="correct-buzzer"><i class="fa-solid fa-circle-check"></i></button>
+                <button id="incorrect-buzzer"><i class="fa-solid fa-circle-xmark"></i></button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="toast-container"></div>
+
+    <!-- java-script -->
+    <!-- <script src = "../socket.io/socket.io.js"></script> -->
+    <!-- <script src="js/common.js"></script> -->
+    <!-- <script src="js/index.js"></script> -->
+</body>
+<script>
+    let timerInterval;
+    startTimer(30)
+    function startTimer(duration) {
+        const timerElement = document.querySelector('.timer');
+        const timeDisplay = document.getElementById('time-display');
+        let timeLeft = duration;
+
+        timerInterval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timeDisplay.innerText = "0";
+                return;
+            }
+
+            timeLeft--;
+            const percentage = (timeLeft / duration) * 100;
+
+            // Update the timer text
+            timeDisplay.innerText = timeLeft;
+
+            // Update the circular border
+            timerElement.style.background = `conic-gradient(#00ff00 ${percentage}%, #ff0000 ${percentage}%)`;
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    const timer = document.querySelector(".timer")
+    const mainDisplay = document.querySelector(".main-display")
+    const leaderboardSection = document.querySelector(".leaderboard-section")
+
+   
+    document.getElementById("view-leader").addEventListener('click',()=>{
+        leaderboardSection.style.right = '10rem';
+        mainDisplay.style.visibility = 'hidden';
+    })
+    document.getElementById("hide-leaderboard").addEventListener('click',()=>{
+        leaderboardSection.style.right = '-60rem';
+        mainDisplay.style.visibility = 'visible';
+    })
+
+    
+
+    //leaderboard
+    document.addEventListener("DOMContentLoaded", function() {
+    const hideBtn = document.querySelector('.hide-leaderboard');
+    const leaderboardSection = document.querySelector('.leaderboard-section');
+    const tabButtons = document.querySelectorAll('.tab-menu div');
+    const tabs = document.querySelectorAll('.leaderboard-items');
+
+    // Close leaderboard when 'X' is clicked
+    hideBtn.addEventListener('click', () => {
+        leaderboardSection.style.right = '-60rem'; // Hide leaderboard
+    });
+
+    // Function to switch between tabs
+    tabButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons and tabs
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding tab
+            button.classList.add('active');
+            tabs[index].classList.add('active');
+        });
+    });
+
+    const hideResponsesBtn = document.querySelector('.hide-responses');
+    const responsesSection = document.querySelector('.responses-section');
+    const mcqDisplay = document.querySelector('.mcq-response-display');
+    const buzzerDisplay = document.querySelector('.buzzer-response-display');
+
+    // Hide responses when 'X' is clicked
+    hideResponsesBtn.addEventListener('click', () => {
+        responsesSection.style.right = '-82rem'; // Hide responses section
+        mainDisplay.style.visibility = 'visible';
+    });
+
+    // Toggle between MCQ and Buzzer response displays
+    function toggleResponseDisplay(type = 'mcq') {
+        console.log("called")
+        if (type === 'mcq') {
+            mcqDisplay.classList.add('active');
+            buzzerDisplay.classList.remove('active');
+        } else if (type === 'buzzer') {
+            buzzerDisplay.classList.add('active');
+            mcqDisplay.classList.remove('active');
+        }
+    }
+
+    document.getElementById("view-response").addEventListener('click',()=>{
+        toggleResponseDisplay('mcq');
+        mainDisplay.style.visibility = 'hidden';
+        responsesSection.style.right = '10rem';
+        // toggleResponseDisplay('buzzer');
+    })
+
+    function displayQues(type = 'text'){
+        const text = document.querySelector(".text");
+        const audio = document.querySelector('audio');
+        const image = document.querySelector(".image-wrapper");
+        if(type === "text"){
+            audio.classList.add('hidden');
+            image.classList.add('hidden');
+            text.style.flexBasis = '100%';
+            text.style.width = '100%';
+        }else if(type === "audio"){
+            audio.classList.remove('hidden')
+            image.classList.add('hidden')
+            text.style.flexBasis = '100%';
+            text.style.width = '100%';
+        }else if(type === "image"){
+            image.classList.remove('hidden')
+            text.style.flexBasis = '50%';
+            text.style.width = '50%';
+            audio.classList.add('hidden')
+        }
+    }
+    // displayQues('text')
+    // displayQues('audio')
+    displayQues('image')
+
+    // const queBody = document.querySelector('.que-body');
+    // const audioElement = queBody.querySelector('audio');
+    // const imageElement = queBody.querySelector('img');
+    
+    // // Check if audio exists
+    // if (audioElement && !audioElement.hasAttribute('hidden')) {
+    //     queBody.classList.add('text-with-audio');
+    // }
+
+    // // Check if image exists
+    // if (imageElement && imageElement.getAttribute('src') !== "") {
+    //     queBody.classList.add('text-with-image');
+    // }
+    
+});
+
+
+</script>
+
+
+</html>

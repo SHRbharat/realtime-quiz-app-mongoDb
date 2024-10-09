@@ -1,0 +1,20 @@
+[
+	{
+        "type": "buzzer",
+        "que_en": "What is the boiling point of water?",
+        "que_hi": "पानी का क्वथनांक क्या है?",
+        "correct": "100°C / 100 डिग्री सेल्सियस"
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Which gas is most abundant in the Earth's atmosphere?",
+        "que_hi": "पृथ्वी के वायुमंडल में सबसे अधिक मात्रा में कौन सी गैस है?",
+        "correct": "Nitrogen / नाइट्रोजन"
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Which element has the chemical symbol 'O'?",
+        "que_hi": "किस तत्व का रासायनिक प्रतीक 'O' है?",
+        "correct": "Oxygen / ऑक्सीजन"
+    }
+]
