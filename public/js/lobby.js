@@ -1,5 +1,7 @@
 var socket = io();
-var params = jQuery.deparam(window.location.search); //Gets data from url (pin ,name)
+
+//Gets data from url (pin ,name)
+var params = jQuery.deparam(window.location.search); 
 
 let info = {};
 

@@ -83,7 +83,13 @@ socket.on('nextQuestionPlayer', function(data){
     setHeaderInfo(players = data.playersCount)
 
     //set display panel on first question of round
-    console.log("first question , setting main display for")
+    console.log("first question , setting main display for" , 
+        data.questionData.type,
+         currentQuestionIndex 
+    )
+    // if(currentQuestionIndex == 1){
+    //     data.questionData.type === "mcq" ? setMainDisplay("mcq") : setMainDisplay("buzzer")
+    // }
     if(data.questionData.type === "mcq" && currentQuestionIndex == 1){
         console.log("mcq")
         setMainDisplay("mcq")

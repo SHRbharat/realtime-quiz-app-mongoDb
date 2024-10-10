@@ -392,7 +392,7 @@ io.on("connection", (socket) => {
           io.to(params.pin).emit("updatePlayerLobby", playersInGame);
 
           const resData = {
-            gameId: games.games[i].gameData["gameId"],
+            gameId: games.games[i].gameData["gameid"],
             quiz_type: games.games[i].gameData["quiz_type"],
             time: games.games[i].gameData["time"],
             marks: games.games[i].gameData["marks"],
@@ -566,7 +566,7 @@ io.on("connection", (socket) => {
                   if(questionData.media.image){
                     Object.assign(questionData_ , {media : {image : questionData.media.image}})
                   }else{
-                    Object.assign(questionData_ , {media : {image : questionData.media.audio}})
+                    Object.assign(questionData_ , {media : {audio : questionData.media.audio}})
                   }
                 }
                 // Emit player game data and the first question
@@ -692,6 +692,14 @@ io.on("connection", (socket) => {
                   op3: questionData.op3,
                   op4: questionData.op4,
                 });
+              }
+
+              if(questionData.media){
+                if(questionData.media.image){
+                  Object.assign(questionData_ , {media : {image : questionData.media.image}})
+                }else{
+                  Object.assign(questionData_ , {media : {audio : questionData.media.audio}})
+                }
               }
 
               io.to(game.pin).emit("nextQuestionPlayer", {
