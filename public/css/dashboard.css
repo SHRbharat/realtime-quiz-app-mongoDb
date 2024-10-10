@@ -23,7 +23,7 @@ html {
 body {
     height: 100vh;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     /* background-image: url(assets/floral-1.png); */
     background-color: #000;
     /*
@@ -36,7 +36,7 @@ body {
 }
 
 main{
-    overflow: visible;
+    overflow: hidden;
 }
 
 .rotating-image {
@@ -73,9 +73,8 @@ main{
     }
 }
 
-
 section {
-    padding: 2rem 2rem;
+    padding: 2rem 1rem;
     width: 100%;
     height: calc(100vh - 10rem);
     position: relative;
@@ -126,14 +125,12 @@ a {
 }
 
 @media only screen and (max-width : 1080px) {
-
     section {
         padding: 5rem;
     }
 }
 
 @media only screen and (max-width : 924px) {
-
     .text-inter-sm {
         font-weight: 300;
     }
@@ -147,7 +144,36 @@ a {
     }
 }
 
+@media only screen and (max-width : 768px) {
+    .nav-logo-container {
+        align-items: center !important;
+        width: 95% !important;
+        gap: 0.5rem;
+    }
+
+    .header .button-container {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+}
+
+
 @media only screen and (max-width : 576px) {
+    .header {
+        width: 100% !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+
+    .nav-logo-container .header-text {
+        font-size: 2.2rem !important;
+        margin: 0rem !important;
+    }
+
+    .nav-logo-container .vertical-line {
+        margin: 0rem !important;
+    }
 
     .text-inter-sm {
         font-weight: 300;
@@ -167,10 +193,10 @@ a {
 .header {
     /* background-color: transparent; */
     width: 90%;
-    margin: 2rem auto 0 auto;
+    margin: 1rem auto;
     max-height: 9rem;
     display: flex;
-    padding: 2.4rem 16.7rem;
+    padding: 8px 16px;
     justify-content: space-between;
     align-items: center;
     /* box-shadow: 0px 2px 10px 0px rgb(206 131 193 / 50%); */
@@ -178,14 +204,17 @@ a {
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
-
+    gap: 1rem;
     transition: height 5s linear;
 }
 
 .nav-logo-container {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
+    width: 60%;
+    height: 100%;
+    gap: 1%;
 }
 
 .nav-logo-container .vertical-line {
@@ -198,8 +227,10 @@ a {
 }
 
 .nav-logo img {
+    width: 100%;
+    height: 100%;
     max-height: 7rem;
-    aspect-ratio: 16/10;
+    /*aspect-ratio: 16/10;*/
 }
 
 .nav-logo-container .header-text {
@@ -207,6 +238,7 @@ a {
     margin-left: 1rem;
     color: var(--Primary-2);
     font-weight: 700;
+    line-height: 1.1;
 }
 
 .header-info{
@@ -251,9 +283,14 @@ a {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+.main-display{
+    display: flex;
+    justify-content: center;
+}
+
 .main-display .left-panel{
-    width: 85%;
-    padding: 1rem;
+    width: 80%;
+    padding: 0.5rem;
 }
 
 .main-display .right-panel{
@@ -281,13 +318,11 @@ a {
     width: 100%;
     height: 85%;
     border-radius: 0 2rem 2rem 2rem;
-    padding: 2rem;
-    overflow: auto;
-
+    padding: 1rem;
+    overflow: hidden;
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+    gap: 2rem;
 }
 
 .question-card::before {
@@ -313,22 +348,24 @@ a {
     top: 0;
     padding: 0;
     border-radius: 2rem;
-
 }
 
 .que-body .text{
-    flex-basis: 100%;
-    width : 100%;
-
+    text-align: left;
+    /*flex-basis: 100%;*/
+    /*flex-grow: 1;*/
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap:1rem;
+    gap: 0.5rem;
+}
+
+.que-body .text audio{
+    margin: 1rem 0;
 }
 
 .que-body p{
-    flex-basis: 100%;
     width: 100%;
     text-align: center;
     font-size: 3rem;
@@ -336,20 +373,28 @@ a {
 }
 
 .que-body .image-wrapper{
-    flex-basis: 40%;
-    width: 40%;
-    position: relative;
+    /*flex-basis: 40%;*/
+    /*width: 40%;*/
+    /*position: relative;*/
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 100%;
 }
 
 .que-body img{
-    width : 40rem;
-    height : 30rem;
-    position: absolute;
-    top : 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    border: 2px solid black;
-    border-radius: 2rem;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    /*width : 40rem;*/
+    /*height : 30rem;*/
+    /*position: absolute;*/
+    /*top : 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%,-50%);*/
+    /*border: 2px solid black;*/
+    /*border-radius: 2rem;*/
 }
 
 .main-display .circle{
@@ -363,7 +408,7 @@ a {
 }
 .que-header .count{
     background-color: #00ff00;
-    margin-left: 4rem;
+    margin-left: 1%;
     position: absolute;
     top:50%;
     transform: translateY(-50%);
@@ -395,14 +440,14 @@ a {
 }
 
 .option-panel .option{
-    width : 48%;
-    flex-basis: 48%;
+    width: 40%;
+    /*flex-basis: 48%;*/
     padding : 2rem;
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     border-radius: 2rem;
-    font-size: 4rem;
+    font-size: 3rem;
     text-align: center;
 }
 
@@ -427,7 +472,7 @@ a {
 .main-display .control-strip{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -444,8 +489,8 @@ a {
 
 .timer {
     position: relative;
-    width: 12rem;
-    height: 12rem;
+    width: 10rem;
+    height: 10rem;
     border-radius: 50%;
     background: conic-gradient(#00ff00 0%, #ff0000 100%);
     display: flex;
@@ -470,7 +515,6 @@ a {
     background-color: #fff;
     color: #000;
 }
-
 
 .main-display .control-strip{
     height: 55%;

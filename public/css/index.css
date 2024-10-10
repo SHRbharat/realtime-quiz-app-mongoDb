@@ -115,6 +115,7 @@ section {
         width: 20rem;
     }
 }
+
 @media only screen and (max-width : 768px) {
     .nav-logo-container {
         align-items: center !important;
@@ -183,7 +184,7 @@ section {
     margin: 1rem auto;
     max-height: 10rem;
     display: flex;
-    padding: 8px 12px;
+    padding: 8px 16px;
     justify-content: space-between;
     align-items: center;
     /* box-shadow: 0px 2px 10px 0px rgb(206 131 193 / 50%); */
@@ -196,7 +197,7 @@ section {
 
 .nav-logo-container {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     width: 60%;
     height: 100%;
