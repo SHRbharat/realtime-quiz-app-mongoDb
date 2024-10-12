@@ -443,9 +443,10 @@ a {
     width: 40%;
     /*flex-basis: 48%;*/
     padding : 2rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    background-color: #e3f2fd;
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px); */
     border-radius: 2rem;
     font-size: 3rem;
     text-align: center;
@@ -753,4 +754,9 @@ a {
 .remove-height{
     height: 0;
     display: none;
+}
+
+.disabled{
+    opacity : 0.2;
+    cursor: not-allowed;
 }

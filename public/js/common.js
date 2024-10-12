@@ -69,8 +69,8 @@ function showToast(message, type = "success") {
 
 //logic for timer (executes a function after specified delay when timer runs out)
 let timerInterval;
-function startTimer(duration, callback, delayInSeconds) {
-  console.log("inside startTimer : ")
+function startTimer(duration, callback = null, delayInSeconds = 0) {
+  console.log("inside startTimer : ",duration)
   const timerElement = document.querySelector(".timer");
   const timeDisplay = document.getElementById("time-display");
   let timeLeft = duration;
@@ -90,7 +90,7 @@ function startTimer(duration, callback, delayInSeconds) {
 
     timeLeft--;
     const percentage = (timeLeft / duration) * 100;
-    console.log("timer ", timeLeft)
+    // console.log("timer ", timeLeft)
     // Update the timer text
     timeDisplay.innerText = timeLeft;
 

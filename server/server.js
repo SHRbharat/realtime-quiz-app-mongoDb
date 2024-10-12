@@ -877,7 +877,7 @@ io.on("connection", (socket) => {
       game.gameData.buzzerPressed = true;
       console.log("buzzer recorded");
       socket.emit("buzzerAck", { ack: true });
-      io.to(game.pin).emit("questionOver", {
+      io.to(game.pin).emit("firstToBuzzer", {
         hostId: player.hostId,
         PlayerId: player.playerId,
         name: player.name,
@@ -903,7 +903,7 @@ io.on("connection", (socket) => {
     }
     game.gameData.buzzerPressed = true;
 
-    // Update the player's buzzer score based on the host's decision
+    // Update the player's b uzzer score based on the host's decision
     if (data.res === true) {
       player.gameData.score_buzzer += game.gameData.marks.buzzer_p; // Award points for a correct answer
     } else {
@@ -911,14 +911,19 @@ io.on("connection", (socket) => {
     }
 
     // Fetch updated player data
-    // var playerData = players.getPlayers(game.hostId);
+    var playerData = players.getPlayers(game.hostId);
 
-    // Notify all players that the buzzer round is over and update the leaderboard
-    // io.to(game.pin).emit("questionOver", {
+    //send leaderboard to only host
+    // socket.emit("questionOver", {
     //   playerData,
     //   correctAnswer: data.correctAnswer,
     // });
-    io.to(game.pin).emit("questionOver", player);
+
+    // //broadcast buzzered player to all socekts ,except host
+    // socket.broadcast.to(game.pin).emit("questionOver", player)
+    // io.sockets.sockets.get(socket.id)?.emit('skip-event'); // Optionally inform the host, or ensure the host is excluded.
+    
+    io.to(game.pin).emit("questionOver", {playerData});
   });
 
   // When a player requests their score

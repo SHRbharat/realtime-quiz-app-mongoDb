@@ -9,6 +9,7 @@ let currQuesType = null;
 let questionEnded = false;
 let time = 0;
 
+
 let playersCount = 0
 let currentQuestionIndex = 0
 let round = {
@@ -25,16 +26,10 @@ const mainDisplay = document.querySelector(".main-display")
 //When host connects to server
 socket.on('connect', function () {
     // socket.emit('identifyUser', { role: 'host' });
-    // if(params.quiz_type == 0 || params.quiz_type == 1){
-    //     round.rounds = 1
-    // }else if(params.quiz_type == 2 || params.quiz_type == 3){
-    //     round.rounds = 2
-    // }
 
     // console.log("emiitnf host-join-game")
     socket.emit('host-join-game', params.id);
 });
-
 
 
 //host-join-game returns data{questionData,time,playersCount}
@@ -73,11 +68,10 @@ socket.on('gameQuestions', function (data) {
             socket.emit('timeUp');  
         }, 2);
         correctAns = data.questionData[`op${data.questionData.correct}`]
-        currQuesType = "mcq"
     }else{
         correctAns = data.questionData.correct
-        currQuesType = "buzzer"
     }
+    currQuesType = data.questionData.type
     console.log("ended game Quesions method")
 });
 
@@ -106,21 +100,54 @@ socket.on('gameQuestions', function (data) {
 // })
 
 socket.on('updatePlayersAnswered', function (data) {
-    document.querySelector('.header-info span:nth-child(2)').innerHTML = data;
+    document.querySelector('.header-info .left p:nth-child(2) span').textContent= data;
 });
 
-//logic for handling end of question (data = {playerData , correctAnswer} / {hostId,playerId,name})
-socket.on('questionOver', (data)=> {
-    console.log("question over : " , data)
-    stopTimer();
-   
+//data = {hostId,playerId,name}
+socket.on("firstToBuzzer", (data)=>{
+    console.log("first to buzzer ",data)
+    buzzerPlayer = data
 
-    //frontend logic to setup response popup
+    //flash player's name on screen , wait for some
+    //time for answer and enable view response button
+
     showToast("Question Over, View answer and responses.")
     controlBtns[3].disabled = false
     document.querySelector(".responses-section .answer p").textContent = correctAns
+
+    //render
+    document.querySelector(".buzzer-response-display p span").textContent = data.name;
+        
+    document.getElementById('correct-buzzer').addEventListener('click',()=>{
+        socket.emit("updateBuzzerScores",{
+            "player" : data,
+            "res" : true})
+
+        //display animation
+        console.log("player's answer was correct")
+    })
+    document.getElementById('incorrect-buzzer').addEventListener('click',()=>{
+        socket.emit("updateBuzzerScores",{
+            "player" : data,
+            "res" : false})
+
+        //display animation
+        console.log("player's answer was not correct")
+    })
+})
+
+//logic for handling end of question (data = {playerData , correctAnswer} 
+//data =  {hostId,playerId,name}) ==> for buzzer questions received twice,player buzzers
+//after updting scores ==> 1st one
+socket.on('questionOver', (data)=> {
+    console.log("question over : " , data)
     
     if(currQuesType === "mcq"){
+        //frontend logic to setup response popup
+        showToast("Question Over, View answer and responses.")
+        controlBtns[3].disabled = false
+        document.querySelector(".responses-section .answer p").textContent = correctAns
+        stopTimer();
         //clear contents
         const container = document.querySelector('.mcq-response-display');
         // Select all child elements except the <p> tag
@@ -141,40 +168,19 @@ socket.on('questionOver', (data)=> {
             }
             addResponseItem(counter, player.name, response ,isCorrect );
             counter++;
-        });        
-    }else{
-        //if buzzered 
-        console.log("buzzer by" , data);
-        buzzerPlayer = data
-
-        //display animation for player buzzer (d)
-
-        //render
-        document.querySelector("buzzer-response-display p span").textContent = data
-        
-        document.getElementById('correct-buzzer').addEventListener('click',()=>{
-            socket.emit("updateBuzzerScores",{
-                "player" : data,
-                "res" : true})
-
-            //display animation
-        })
-        document.getElementById('incorrect-buzzer').addEventListener('click',()=>{
-            socket.emit("updateBuzzerScores",{
-                "player" : data,
-                "res" : false})
-
-            //display animation
-        })
+        });       
     }
 
-    //update leaderboard
     renderLeaderboard(data)
 });
 
 
 socket.on('GameOver', function (data) {
-    console.log("leaderboard" ,data);
+    console.log("game over" ,data);
+    showToast("Game Over. Redirecting to results...")
+    setTimeout(function() {
+        window.location.href = `../../result/?id=${params.id}`;
+    }, 4000); 
 });
 
 
@@ -273,8 +279,28 @@ function displayQuestion(questionData){
             setupQuestioSubtype('image')
         }else if(questionData.media.audio){
             console.log("inside DisplayQuestion => audio")
-            const audio = document.querySelector(".que-body audio source")
-            audio.src = `../../uploads/${params.db_id}_${questionData.media.audio}`
+            const audioFileName = `${params.db_id}_${questionData.media.audio}`;
+    
+            const mp3Source = document.querySelector(".que-body audio source[type='audio/mpeg']");
+            const oggSource = document.querySelector(".que-body audio source[type='audio/ogg']");
+            
+            //audio format
+            if (questionData.media.audio.endsWith('.mp3')) {
+                mp3Source.src = `../../uploads/${audioFileName}`;
+                oggSource.src = ''; 
+            } else if (questionData.media.audio.endsWith('.ogg')) {
+                oggSource.src = `../../uploads/${audioFileName}`;
+                mp3Source.src = ''; 
+            } else {
+                console.error("Unsupported audio format");
+                showToast("Unsupported audio format","error");
+            }
+
+            
+            const audioElement = document.querySelector(".que-body audio");
+            // Load the new source
+            audioElement.load();
+            
             setupQuestioSubtype('audio')
         }
     }else{
@@ -472,11 +498,13 @@ controlBtns[0].addEventListener('click', ()=>{
 })
 //next-question
 controlBtns[1].addEventListener('click', ()=>{
+    headerInfo[1].textContent = "00"
     console.log("clicked next question")
     socket.emit('nextQuestion'); //Tell server to start new question
 })
 //end-button
 controlBtns[2].addEventListener('click', ()=>{
+    headerInfo[1].textContent = "00"
     if(controlBtns[2].ariaLabel == 'End Quiz'){
         console.log("end quiz clicked")
         showToast("Ending quiz , displaying results...")
@@ -498,6 +526,8 @@ controlBtns[3].addEventListener('click', ()=>{
     mainDisplay.style.opacity = 0;
     responsesSection.style.right = '10rem';
 
+    console.log("Response button clicked ",round , currentQuestionIndex)
+
     //display required flow contorl button
     if (
         (params.quiz_type == 0 && currentQuestionIndex == params.no_mcq) ||
@@ -508,7 +538,7 @@ controlBtns[3].addEventListener('click', ()=>{
           //show end quiz button
           controlBtns[2].style.display = 'block'
           controlBtns[2].ariaLabel = 'End Quiz'
-          controlBtns[1].style.display = 'none'
+          controlBtns[1].disabled = true; //disable next ques button
           controlBtns[2].disabled = false;
       }else if(
         (params.quiz_type == 2 && round.current == 1 && currentQuestionIndex == params.no_mcq) ||
@@ -517,14 +547,14 @@ controlBtns[3].addEventListener('click', ()=>{
           //show next round button
           controlBtns[2].style.display = 'block'
           controlBtns[2].ariaLabel = 'Next Round'
-          controlBtns[1].style.display = 'none'
+          controlBtns[1].disabled = true; //disable next ques button
           controlBtns[2].disabled = false;
           
           //reset counter
           console.log("reset currentQuestionIndex controlBtn[3].addEventLister")
           round.current = 2
           currentQuestionIndex = 0 
+      }else{
+        controlBtns[1].disabled = false;
       }
-
-    controlBtns[1].disabled = false;
 })

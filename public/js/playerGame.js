@@ -5,8 +5,9 @@ var params = jQuery.deparam(window.location.search);
 console.log("params : ",params)
 
 
-//true , false , "NA" (after time) , "BUZZER" , "NOT BUZZER" , "NO RESPONSE" ,
-let correct = "NO RESPONSE";   
+//true , false , "NA" (after time) , "NO RESPONSE" 
+let correct = "NO RESPONSE";
+let buzzerAck = "NO RESPONSE"; //"BUZZER" , "NOT BUZZER" , "NO RESPONSE" 
 
 let playerAnswered = false;
 let score = {mcq: 0,buzzer:0};
@@ -61,21 +62,29 @@ socket.on('playerGameData', function(data){
         console.log("timer started")
         startTimer(data.time, () => {
             console.log('times up');
-            //disable responses   
+            //disable responses after time runs out
             responseBtns.forEach(element => {
-                element.style.opacity = '0.2'
                 element.classList.add('disabled')
             });
         }, 2);
-        currQuesType = "mcq"
     }else{
-        currQuesType = "buzzer"
+        document.querySelector(".time-remaining").textContent = "- -"
     }
+
+    currQuesType = data.questionData.type
  });
 
-//receive questions after the first one data = {questionData}
+//receive questions after the first one, data = {questionData}
 socket.on('nextQuestionPlayer', function(data){
+    //new round has started
+    if( (round.rounds == 2 && currentQuestionIndex == params.no_mcq) || 
+        (round.rounds == 3 && currentQuestionIndex == params.no_buzzer)){
+        currentQuestionIndex = 0
+        round.current = 2
+    }
+
     correct = "NO RESPONSE";
+    buzzerAck = "NO RESPONSE";
     playerAnswered = false;
     currentQuestionIndex++;
 
@@ -85,24 +94,25 @@ socket.on('nextQuestionPlayer', function(data){
     //set display panel on first question of round
     console.log("first question , setting main display for" , 
         data.questionData.type,
-         currentQuestionIndex 
+        currentQuestionIndex 
     )
-    // if(currentQuestionIndex == 1){
-    //     data.questionData.type === "mcq" ? setMainDisplay("mcq") : setMainDisplay("buzzer")
-    // }
-    if(data.questionData.type === "mcq" && currentQuestionIndex == 1){
-        console.log("mcq")
-        setMainDisplay("mcq")
-    }else if(data.questionData.type === "buzzer" && currentQuestionIndex == 1){
-        console.log("buzzer")
-        setMainDisplay("buzzer") 
+
+    if(currentQuestionIndex == 1){
+        data.questionData.type === "mcq" ? setMainDisplay("mcq") : setMainDisplay("buzzer")
     }
+    // if(data.questionData.type === "mcq" && currentQuestionIndex == 1){
+    //     console.log("mcq")
+    //     setMainDisplay("mcq")
+    // }else if(data.questionData.type === "buzzer" && currentQuestionIndex == 1){
+    //     console.log("buzzer")
+    //     setMainDisplay("buzzer") 
+    // }
 
     displayQuestion(data.questionData)
 
     if(data.questionData.type == "mcq"){
-        console.log("timer started")
-        startTimer(data.time, () => {
+        console.log("timer started",data.time)
+        startTimer(time, () => {
             console.log('times up');
             //disable responses   
             responseBtns.forEach(element => {
@@ -110,19 +120,22 @@ socket.on('nextQuestionPlayer', function(data){
                 element.classList.add('disabled')
             });
         }, 2);
-        currQuesType = "mcq"
     }else{
-        currQuesType = "buzzer"
+        document.querySelector(".time-remaining").textContent = "- -"
     }
+
+    currQuesType = data.questionData.type
 });
 
 // submit mcq (1-4) 
 function submitMcq(num){
     if(playerAnswered == false){
         playerAnswered = true;
-        console.log(`answer submitted : ${responseBtns[num-1]}` , num , time)
+        console.log(`answer submitted : ${responseBtns[num-1].textContent}` , num , time)
+        stopTimer();
+
         socket.emit('playerAnswer', num);
-        showToast(`answer submitted : ${responseBtns[num-1].TextContent}`)
+        showToast(`answer submitted : ${responseBtns[num-1].textContent}`)
         
         //trigger a lay-over , with waiting for result loader 
 
@@ -155,28 +168,35 @@ function submitBuzzer(){
 
 socket.on("buzzerAck", (ack)=>{
     if(ack == true){
-        correct = "BUZZER"
+        buzzerAck = "BUZZER"
         console.log("you buzzered first!!!")
         //dispaly result of buzzer on popover
     }else if(ack == false){
-        correct = "NOT BUZZER"
+        buzzerAck = "NOT BUZZER"
         console.log("your buzzer was not recorded")
     }
 })
 
-//when question ends data = {hostId,playerId,name} / playerData{name,gameData{}}
+//when question ends 
+//data = {hostId,playerId,name} -> when a buzzer is recorded
+//playerData{name,gameData{}} -> when host submits buzzer results
 socket.on('questionOver', function(data){
-    console.log("questionOver" , data)
+    //hide the question and display answer pop-up and waiting for next question
+    console.log("<< question over>>",data,correct)
+
     let prevBuzzerScore = score.buzzer
     socket.emit('getScore');
 
     if(currQuesType == 'mcq'){
-        stopTimer();
+        if(!playerAnswered) 
+            stopTimer();
+
         if(correct == true){
-            console.log("correcr answer")
+            console.log("correct answer")
             //display result with animatio on pop-over , with waiting for next question
         }else if(correct == false){
             console.log("incorrect answer")
+            
             
         }else if(correct == "NA"){
             console.log("time limit")
@@ -184,22 +204,29 @@ socket.on('questionOver', function(data){
         }else{
             console.log("No response")
         }
-    }else if(currQuesType == "buzzer"){
+    }else if(currQuesType == "buzzer" && !data.gameData){
         if(correct == "BUZZER"){
-            if(prevBuzzerScore - score.buzzer <= prevBuzzerScore){
-                console.log("wrong answer - buzzer")
-            }else{
-                console.log("correct answer buzzer")
-            }
+            console.log("YoUR BUZZER , SAY YOUR ANSWER LOUD")
         }else{
             console.log("NO RESPONSE - buzzer")
+        }
+    }else if(currQuesType == "buzzer" && data.gameData){
+        //buzzer result
+        if(prevBuzzerScore - score.buzzer == 0){
+            console.log("NO resposne for buzzzer - no dedctions")
+        }
+        else if(score.buzzer - prevBuzzerScore < 0){
+            console.log("wrong answer - buzzer")
+        }else{
+            console.log("correct answer buzzer")
         }
     }
 });
 
 socket.on('newScore', function(data){
-    console.log("score : ", data)
+    console.log("score <need to be fired just afeter questionOver>: ", data)
 
+    document.querySelector(".header-info .left p:last-child span").textContent = data.mcq + data.buzzer
     score.mcq = data.mcq
     score.buzzer = data.buzzer
 });
@@ -275,7 +302,7 @@ function setMainDisplay(type){
     if(type === "mcq"){
         console.log("inside setMainDisplay => mcq")
         for(let i=0;i<3;i++){
-            responseBtns[i].classList.remove('hidden')
+            responseBtns[i].classList.remove('hidden','disabled')
         }
         responseBtns[4].classList.add('hidden')
         
@@ -286,7 +313,7 @@ function setMainDisplay(type){
         for(let i=0;i<3;i++){
             responseBtns[i].classList.add('hidden')
         }
-        responseBtns[4].classList.remove('hidden')
+        responseBtns[4].classList.remove('hidden','disabled')
 
         marks[0].textContent = params.buzzer_p
         marks[1].textContent = params.buzzer_n
@@ -318,8 +345,28 @@ function displayQuestion(questionData){
             setupQuestioSubtype('image')
         }else if(questionData.media.audio){
             console.log("inside DisplayQuestion => audio")
-            const audio = document.querySelector(".que-body audio source")
-            audio.src = `../../uploads/${params.db_id}_${questionData.media.audio}`
+            const audioFileName = `${params.db_id}_${questionData.media.audio}`;
+    
+            const mp3Source = document.querySelector(".que-body audio source[type='audio/mpeg']");
+            const oggSource = document.querySelector(".que-body audio source[type='audio/ogg']");
+            
+            //audio format
+            if (questionData.media.audio.endsWith('.mp3')) {
+                mp3Source.src = `../../uploads/${audioFileName}`;
+                oggSource.src = ''; 
+            } else if (questionData.media.audio.endsWith('.ogg')) {
+                oggSource.src = `../../uploads/${audioFileName}`;
+                mp3Source.src = ''; 
+            } else {
+                console.error("Unsupported audio format");
+                showToast("Unsupported audio format","error");
+            }
+
+            
+            const audioElement = document.querySelector(".que-body audio");
+            // Load the new source
+            audioElement.load();
+            
             setupQuestioSubtype('audio')
         }
     }else{
@@ -329,7 +376,7 @@ function displayQuestion(questionData){
 }
 
 //used by 'displayQuestion()'
-function setupQuestioSubtype(type = 'text'){
+function setupQuestioSubtype(type){
     const text = document.querySelector(".text");
     const audio = document.querySelector('audio');
     const image = document.querySelector(".image-wrapper");
