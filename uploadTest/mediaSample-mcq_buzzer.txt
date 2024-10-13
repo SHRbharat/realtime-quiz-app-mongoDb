@@ -1,7 +1,7 @@
 [
     {
         "type" : "mcq",
-        "que_en" : "What is the capital of India?",
+        "que_en" : "What is the capital of India?<<image>>",
         "que_hi" : "भारत की राजधानी क्या है?",
         "op1" : "Kolkata / कोलकाता",
         "op2" : "New Delhi / नई दिल्ली",
@@ -14,7 +14,7 @@
     },
     {
         "type": "mcq",
-        "que_en": "Who wrote the national anthem of India?",
+        "que_en": "Who wrote the national anthem of India?<<image>>",
         "que_hi": "भारत का राष्ट्रीय गान किसने लिखा?",
         "op1": "Rabindranath Tagore / रवींद्रनाथ टैगोर",
         "op2": "Mahatma Gandhi / महात्मा गांधी",
@@ -27,7 +27,7 @@
     },
     {
         "type": "mcq",
-        "que_en": "Which is the largest continent in the world?",
+        "que_en": "Which is the largest continent in the world?<<audio>>",
         "que_hi": "दुनिया का सबसे बड़ा महाद्वीप कौन सा है?",
         "op1": "Africa / अफ्रीका",
         "op2": "Asia / एशिया",
@@ -40,7 +40,7 @@
     },
     {
         "type" : "buzzer",
-        "que_en" : "What is the capital of India?",
+        "que_en" : "What is the capital of India?<<audio>>",
         "que_hi" : "भारत की राजधानी क्या है?",
         "correct" : "New Delhi / नई दिल्ली" ,
 		"media" : {

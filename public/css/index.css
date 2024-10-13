@@ -27,6 +27,21 @@ body {
     background-image: url("assets/home-bg.webp");
 }
 
+/*To make body bg image less opaque */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.912);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6; 
+    z-index: -10;
+}
+
 section {
     padding: 5rem 10rem;
     width: 100%;
@@ -248,9 +263,9 @@ section {
 .login-section .form-panel {
     width: 30%;
     border: none;
-    /* border-radius: 2rem; */
-    /* background-color: rgba(52, 46, 51, 0.173); */
-    /* box-shadow: 0px 4px 20px 0px rgb(206 131 193 / 50%); */
+    /* border-radius: 2rem; 
+    background-color: rgba(52, 46, 51, 0.173);
+    box-shadow: 0px 4px 20px 0px rgb(206 131 193 / 50%); */
     padding: 2rem 4rem;
 }
 
@@ -311,7 +326,7 @@ select:focus {
 
 form input::placeholder,
 select::placeholder {
-    color: var(--White);
+    color: #7e8693;
 }
 
 /* file upload button */
@@ -484,10 +499,14 @@ input[type="file"]::file-selector-button:active {
     height: 40rem;
     max-height: 80rem;
     margin-top: 3rem;
-    border: 2px solid var(--Primary-2);
-    border-radius: 5rem;
+    /* border: 2px solid var(--Primary-2); */
     padding: 2rem 4rem;
     overflow-y: auto;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .games-container p {
@@ -498,11 +517,19 @@ input[type="file"]::file-selector-button:active {
 
 .games-container .game-item {
     width: 100%;
-    border: 2px solid var(--Highlight-Primary);
-    border-radius: 2rem;
+    /* border: 2px solid var(--Highlight-Primary); */
     font-size: 2rem;
     padding: 1rem 2rem;
     margin-bottom: 1rem;
+
+    background-color: transparent;
+    border-radius: .8rem;
+    border-bottom: 2px solid rgba(239, 230, 230, 0.845);
+    transition: background-color 0.3s ease;
+}
+
+.games-container .game-item:hover{
+    background-color: rgba(255, 255, 255, 0.274);
 }
 
 .games-container .game-item p {

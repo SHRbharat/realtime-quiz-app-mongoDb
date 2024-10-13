@@ -424,48 +424,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  //When the player connects from game view (for the first question)
-  // socket.on("player-join-game", (data) => {
-  //   var player = players.getPlayer(data.id);
-  //   if (player) {
-  //     var game = games.getGame(player.hostId);
-  //     socket.join(game.pin);
-  //     player.playerId = socket.id; //Update player id with socket id
-
-  //     var playerData = players.getPlayers(game.hostId);
-  //     socket.emit("playerGameData", playerData);
-  //   } else {
-  //     socket.emit("noGameFound"); //No player found
-  //   }
-  // });
-
-  //When the player connects from the game view (for the first question)
-  // socket.on("player-join-game", (data) => {
-  //   var player = players.getPlayer(data.id);
-  //   if (player) {
-  //     var game = games.getGame(player.hostId);
-  //     socket.join(game.pin);
-  //     player.playerId = socket.id; // Update player id with socket id
-
-  //     var playerData = players.getPlayers(game.hostId);
-
-  //     // Construct game data to send
-  //     var gameData = {
-  //       quiz_type: game.gameData.quiz_type,
-  //       time: game.gameData.time ,
-  //       marks: game.gameData.marks
-  //     };
-
-  //     // Emit both player and game data to the connected player
-  //     socket.emit("playerGameData", {
-  //       playerData: playerData,
-  //       gameData: gameData
-  //     });
-  //   } else {
-  //     socket.emit("noGameFound"); // No player found
-  //   }
-  // });
-
   // When the player connects from the game view (for the first question), sends the first question, player data, and game data
   socket.on("player-join-game", (id) => {
     console.log("<< player-join-game >>");
@@ -876,32 +834,37 @@ io.on("connection", (socket) => {
       //record the buzzer
       game.gameData.buzzerPressed = true;
       console.log("buzzer recorded");
-      socket.emit("buzzerAck", { ack: true });
+      socket.emit("buzzerAck", true );
       io.to(game.pin).emit("firstToBuzzer", {
         hostId: player.hostId,
         PlayerId: player.playerId,
         name: player.name,
       });
     } else {
-      socket.emit("buzzerAck", { ack: false });
+      console.log("buzzer not recorded")
+      socket.emit("buzzerAck",false);
     }
   });
 
   // Host updates the result of a single buzzer response
+  socket.off("updateBuzzerScores",()=>{});
   socket.on("updateBuzzerScores", (data) => {
     console.log("<< updateBuzzerScores >>");
-    var player = players.getPlayer(data.player.playerId);
+    console.log(data)
+    var player = players.getPlayer(data.player.PlayerId);
     if (!player) {
+      console.log("playernot found")
       socket.emit("error", "Player not found");
       return;
     }
 
     var game = games.getGame(player.hostId);
     if (!game) {
+      console.log("game not found")
       socket.emit("error", "Game not found");
       return;
     }
-    game.gameData.buzzerPressed = true;
+    game.gameData.buzzerPressed = false;
 
     // Update the player's b uzzer score based on the host's decision
     if (data.res === true) {
@@ -913,17 +876,19 @@ io.on("connection", (socket) => {
     // Fetch updated player data
     var playerData = players.getPlayers(game.hostId);
 
-    //send leaderboard to only host
-    // socket.emit("questionOver", {
-    //   playerData,
-    //   correctAnswer: data.correctAnswer,
-    // });
+    try{
+      //send leaderboard to only host
+      socket.emit("questionOver",playerData);
 
-    // //broadcast buzzered player to all socekts ,except host
-    // socket.broadcast.to(game.pin).emit("questionOver", player)
-    // io.sockets.sockets.get(socket.id)?.emit('skip-event'); // Optionally inform the host, or ensure the host is excluded.
-    
-    io.to(game.pin).emit("questionOver", {playerData});
+      // //broadcast buzzered player to all socekts ,except host
+      // socket.broadcast.to(game.pin).emit("questionOver", player)
+      // io.sockets.sockets.get(socket.id)?.emit('skip-event'); // Optionally inform the host, or ensure the host is excluded.
+      
+      io.to(game.pin).emit("buzzerQuestionOver", player);
+    }catch(error){
+      console.log(error)
+    }
+    console.log("END OF UPDATEBUZZERSCORE")
   });
 
   // When a player requests their score

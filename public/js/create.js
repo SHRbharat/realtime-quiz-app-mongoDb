@@ -6,6 +6,10 @@ socket.once("connect", function () {
 
 socket.once("gameNamesData", function (data) {
   console.log(data);
+  // Get the container and clear its contents
+  const gamesContainer = document.querySelector(".games-container");
+  gamesContainer.innerHTML = "";
+
   if(!data){
     const p = document.createElement("p").textContent = "Sorry! No game found. Please create a new game"
     document.querySelector(".games-container").appendChild(p)

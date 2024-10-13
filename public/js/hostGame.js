@@ -40,9 +40,9 @@ socket.on('gameQuestions', function (data) {
     playersCount = data.playersCount
     time = data.time
     
+    controlBtns[0].disabled = false
     controlBtns[1].disabled = true
     controlBtns[2].disabled = true
-    controlBtns[2].style.display = 'none'
     controlBtns[3].disabled = true
 
     setHeaderInfo(players = data.playersCount)
@@ -75,31 +75,8 @@ socket.on('gameQuestions', function (data) {
     console.log("ended game Quesions method")
 });
 
-
-//data {hostId,playerId,name}
-// socket.on("updateBuzzerList",(data)=>{
-//     console.log("buzzer by" , data);
-//     buzzerPlayer = data
-
-//     //display animation for player buzzer (d)
-
-//     //display response buttons for host , after answer
-//     document.getElementById('response-popup').style.display = 'block';
-//     controlBtns[0].style.display = 'block'
-
-//     document.getElementById('correctBuzzer').addEventListener('click',()=>{
-//         socket.emit("updateBuzzerScores",{
-//             "player" : buzzerPlayer,
-//             "res" : true})
-//     })
-//     document.getElementById('incorrectBuzzer').addEventListener('click',()=>{
-//         socket.emit("updateBuzzerScores",{
-//             "player" : buzzerPlayer,
-//             "res" : false})
-//     })
-// })
-
 socket.on('updatePlayersAnswered', function (data) {
+    console.log("player Answered , count :",data)
     document.querySelector('.header-info .left p:nth-child(2) span').textContent= data;
 });
 
@@ -111,7 +88,7 @@ socket.on("firstToBuzzer", (data)=>{
     //flash player's name on screen , wait for some
     //time for answer and enable view response button
 
-    showToast("Question Over, View answer and responses.")
+    showToast(`wait for ${data.name} to answer the question , then click on responses`)
     controlBtns[3].disabled = false
     document.querySelector(".responses-section .answer p").textContent = correctAns
 
@@ -169,6 +146,9 @@ socket.on('questionOver', (data)=> {
             addResponseItem(counter, player.name, response ,isCorrect );
             counter++;
         });       
+    }else{
+        showToast("Question Over, view leaderboard or move to next question.")
+        
     }
 
     renderLeaderboard(data)
@@ -518,6 +498,8 @@ controlBtns[2].addEventListener('click', ()=>{
 })
 //view-response
 controlBtns[3].addEventListener('click', ()=>{
+    console.log("Response button clicked ",round , currentQuestionIndex)
+    
     if(currQuesType == 'mcq'){
         toggleResponseDisplay('mcq');
     }else{
@@ -526,7 +508,6 @@ controlBtns[3].addEventListener('click', ()=>{
     mainDisplay.style.opacity = 0;
     responsesSection.style.right = '10rem';
 
-    console.log("Response button clicked ",round , currentQuestionIndex)
 
     //display required flow contorl button
     if (
@@ -536,7 +517,8 @@ controlBtns[3].addEventListener('click', ()=>{
         (params.quiz_type == 3 && round.current == 2 && currentQuestionIndex == params.no_mcq)
       ) {
           //show end quiz button
-          controlBtns[2].style.display = 'block'
+        //   controlBtns[2].style.display = 'block'
+        console.log("response button logic if")
           controlBtns[2].ariaLabel = 'End Quiz'
           controlBtns[1].disabled = true; //disable next ques button
           controlBtns[2].disabled = false;
@@ -545,7 +527,8 @@ controlBtns[3].addEventListener('click', ()=>{
         (params.quiz_type == 3 && round.current == 1 && currentQuestionIndex == params.no_buzzer)
       ){
           //show next round button
-          controlBtns[2].style.display = 'block'
+        //   controlBtns[2].style.display = 'block'
+        console.log("response button logic else-if")
           controlBtns[2].ariaLabel = 'Next Round'
           controlBtns[1].disabled = true; //disable next ques button
           controlBtns[2].disabled = false;
@@ -555,6 +538,7 @@ controlBtns[3].addEventListener('click', ()=>{
           round.current = 2
           currentQuestionIndex = 0 
       }else{
+        console.log("response button logic else")
         controlBtns[1].disabled = false;
       }
 })

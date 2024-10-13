@@ -169,22 +169,20 @@ function submitBuzzer(){
 socket.on("buzzerAck", (ack)=>{
     if(ack == true){
         buzzerAck = "BUZZER"
-        console.log("you buzzered first!!!")
+        console.log("you buzzered first!!! Say your asnwer loud")
         //dispaly result of buzzer on popover
-    }else if(ack == false){
+    }else{
         buzzerAck = "NOT BUZZER"
         console.log("your buzzer was not recorded")
     }
 })
 
 //when question ends 
-//data = {hostId,playerId,name} -> when a buzzer is recorded
-//playerData{name,gameData{}} -> when host submits buzzer results
 socket.on('questionOver', function(data){
     //hide the question and display answer pop-up and waiting for next question
     console.log("<< question over>>",data,correct)
 
-    let prevBuzzerScore = score.buzzer
+
     socket.emit('getScore');
 
     if(currQuesType == 'mcq'){
@@ -204,24 +202,36 @@ socket.on('questionOver', function(data){
         }else{
             console.log("No response")
         }
-    }else if(currQuesType == "buzzer" && !data.gameData){
-        if(correct == "BUZZER"){
-            console.log("YoUR BUZZER , SAY YOUR ANSWER LOUD")
-        }else{
-            console.log("NO RESPONSE - buzzer")
-        }
-    }else if(currQuesType == "buzzer" && data.gameData){
+    }
+    // }else if(currQuesType == "buzzer" && !data.gameData){
+    //     if(correct == "BUZZER"){
+    //         console.log("YoUR BUZZER , SAY YOUR ANSWER LOUD")
+    //     }else{
+    //         console.log("NO RESPONSE - buzzer")
+    //     }
+    // }
+});
+
+//after updating scores from the host
+//data = name , hostid , gameData etc
+socket.on("buzzerQuestionOver",(data)=>{
+    // socket.emit('getScore')
+    console.log("<<buzzer question over>>", data)
+
+    if(currQuesType == "buzzer"){
         //buzzer result
-        if(prevBuzzerScore - score.buzzer == 0){
+        if(score.buzzer - data.gameData.score_buzzer == 0){
             console.log("NO resposne for buzzzer - no dedctions")
         }
-        else if(score.buzzer - prevBuzzerScore < 0){
+        else if(score.buzzer - data.gameData.score_buzzer < 0){
             console.log("wrong answer - buzzer")
         }else{
             console.log("correct answer buzzer")
         }
     }
-});
+
+    socket.emit('getScore');
+})
 
 socket.on('newScore', function(data){
     console.log("score <need to be fired just afeter questionOver>: ", data)
@@ -301,7 +311,7 @@ function setMainDisplay(type){
     const marks = document.querySelectorAll(".marks-container div")
     if(type === "mcq"){
         console.log("inside setMainDisplay => mcq")
-        for(let i=0;i<3;i++){
+        for(let i=0;i<4;i++){
             responseBtns[i].classList.remove('hidden','disabled')
         }
         responseBtns[4].classList.add('hidden')
@@ -310,7 +320,7 @@ function setMainDisplay(type){
         marks[1].textContent = params.mcq_n
     }else{
         console.log("inside setMainDisplay => buzzer")
-        for(let i=0;i<3;i++){
+        for(let i=0;i<4;i++){
             responseBtns[i].classList.add('hidden')
         }
         responseBtns[4].classList.remove('hidden','disabled')
@@ -403,7 +413,7 @@ function setupQuestioSubtype(type){
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-for(let i = 0 ; i<3;i++){
+for(let i = 0 ; i<4;i++){
     responseBtns[i].addEventListener('click',()=>{
         submitMcq(i + 1)
     })

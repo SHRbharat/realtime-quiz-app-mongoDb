@@ -373,13 +373,13 @@ a {
 }
 
 .que-body .image-wrapper{
-    /*flex-basis: 40%;*/
-    /*width: 40%;*/
-    /*position: relative;*/
+    flex-basis: 40%;
+    width: 40%;
+    position: relative;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
     max-height: 100%;
 }
 
@@ -389,12 +389,12 @@ a {
     max-width: 100%;
     /*width : 40rem;*/
     /*height : 30rem;*/
-    /*position: absolute;*/
-    /*top : 50%;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%,-50%);*/
-    /*border: 2px solid black;*/
-    /*border-radius: 2rem;*/
+    position: absolute;
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /* border: 2px solid black; */
+    /* border-radius: 2rem; */
 }
 
 .main-display .circle{
@@ -456,7 +456,8 @@ a {
     width : 20rem;
     height : 20rem;
     padding: 2rem;
-    border: 4px solide #d44d4a;
+    background-color: #e3f2fd;
+    border: 4px solid #d44d4a;
     color: #000;
     text-align: center;
     border-radius: 50%;
