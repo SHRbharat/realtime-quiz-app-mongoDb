@@ -3,7 +3,8 @@
     --Highlight-Primary: #06ba63;
     --Secondary: #7e8693;
     --White: #ffffff;
-    --Primary-2: #f06523;
+    --dark-gray:rgb(66, 72, 66);
+    --Primary-2: #f17f4ae8;
 }
 
 * {
@@ -23,9 +24,25 @@ html {
 body {
     height: 100vh;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     background-image: url("assets/home-bg.webp");
 }
+
+/********************** To make body bg image less opaque ***********************/
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.912);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6; /* Adjust value for transparency */
+    z-index: -1; /* Ensure it stays behind content */
+}
+
 
 section {
     padding: 5rem 10rem;
@@ -57,7 +74,7 @@ h3 {
 }
 
 h4 {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 600;
 }
 
@@ -180,7 +197,7 @@ section {
 
 .header {
     /* background-color: transparent; */
-    width: 90%;
+    width: 99%;
     margin: 1rem auto;
     max-height: 10rem;
     display: flex;
@@ -188,9 +205,12 @@ section {
     justify-content: space-between;
     align-items: center;
     /* box-shadow: 0px 2px 10px 0px rgb(206 131 193 / 50%); */
-    background-color: rgba(255, 255, 255, 0.1);
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    background-color: #ffffff00;
     border-radius: 1.2rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.214);
+
     backdrop-filter: blur(10px);
     gap: 1rem;
 }
@@ -221,7 +241,7 @@ section {
 }
 
 .nav-logo-container .header-text {
-    font-size: 3rem;
+    font-size: 2.2rem;
     margin-left: 1rem;
     color: var(--Primary-2);
     font-weight: 700;
@@ -256,7 +276,9 @@ section {
 
 .login-section h4,
 .startGame-section h4 {
-    color: var(--Primary-2);
+    /* color: var(--Primary-2); */
+    color: var(--dark-gray);
+
     width: 100%;
     text-align: center;
 }
@@ -301,7 +323,7 @@ select {
     border: 2px solid var(--Highlight-Primary);
     padding-left: 2rem;
     font-size: 1.8rem;
-    background-color: #e7ebf0df;
+    background-color: #ffffff;
 }
 
 form input:focus,
