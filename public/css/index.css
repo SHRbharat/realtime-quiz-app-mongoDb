@@ -1,10 +1,12 @@
 :root {
     --Main-Primary: linear-gradient(135deg, #fffde7, #e3f2fd);
     --Highlight-Primary: #06ba63;
+
     --Secondary: #7e8693;
     --White: #ffffff;
     --dark-gray:rgb(66, 72, 66);
-    --Primary-2: #f17f4ae8;
+    --Primary-2: rgb(220, 143, 9);
+    --Red: #9d0208;
 }
 
 * {
@@ -333,7 +335,7 @@ select:focus {
 
 form input::placeholder,
 select::placeholder {
-    color: var(--White);
+    color: var(--Secondary);
 }
 
 /* file upload button */
@@ -358,9 +360,15 @@ input[type="file"]::file-selector-button:active {
     background-color: #e5e7eb;
 }
 
-
+/* change */
 .create-form {
     width: 80%;
+    border-radius: 2rem;
+    border: 1px solid grey;
+    background: #ffffff90;
+    box-shadow: 10px 10px 5px lightblue;
+
+
 }
 
 .create-form h4,
@@ -404,13 +412,12 @@ input[type="file"]::file-selector-button:active {
 
 #create-room-form .mcq-wrapper input:first-child,
 #create-room-form .buzzer-wrapper input:first-child {
-    background-color: #09f2819d;
+    box-shadow: rgba(14, 215, 27, 0.35) 0px 5px 10px;
 }
 
 #create-room-form .mcq-wrapper input:last-child,
 #create-room-form .buzzer-wrapper input:last-child {
-    background-color: #f220099d;
-}
+    box-shadow: rgba(226, 19, 19, 0.526) 0px 5px 10px;}
 
 #create-room-form select option {
     background-color: #7e8693;
@@ -497,6 +504,110 @@ input[type="file"]::file-selector-button:active {
     color: var(--White);
 }
 
+/* CSS */ /* create quiz button css */
+
+.button-82-pushable {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-82-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+.button-82-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    hsl(143, 91%, 54%) 0%,
+    hsl(123, 61%, 45%) 8%,
+    hsl(147, 89%, 22%) 92%,
+    hsl(93, 91%, 17%) 100%
+  );
+}
+
+.button-82-front {
+  display: block;
+  position: relative;
+  padding: 12px 27px;
+  border-radius: 12px;
+  font-size: 2.2rem;
+  color: white;
+  background: hsl(119, 86%, 22%);
+  will-change: transform;
+  transform: translateY(-4px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+
+@media (min-width: 768px) {
+  .button-82-front {
+    font-size: 1.25rem;
+    padding: 12px 42px;
+  }
+}
+
+.button-82-pushable:hover {
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.button-82-pushable:hover .button-82-front {
+  transform: translateY(-6px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:hover .button-82-shadow {
+  transform: translateY(4px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~Start a game~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -556,7 +667,7 @@ input[type="file"]::file-selector-button:active {
 
 /* Popup Window */
 .popup-window {
-    background-color: #07b2fb;
+    background-color: #A4DDED;
     border-radius: 1rem;
     padding: 2rem;
     width: 90%;
@@ -620,11 +731,17 @@ input[type="file"]::file-selector-button:active {
 #media-form .primary-button {
     background-color: #4caf50;
     color: white;
+    height: 7vh;
+    font-size: 1.6rem;
+
+
 }
 
 #media-form .secondary-button {
-    background-color: #f44336;
+    background-color: #f40000;
     color: white;
+    height: 7vh;
+    font-size: 1.6rem;
 }
 
 

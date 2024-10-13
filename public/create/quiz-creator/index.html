@@ -23,7 +23,7 @@
             <a href="#" class="nav-logo"><img src="../../css/assets/knit.png"></a>
             <div class="vertical-line"></div>
             <a href="#" class="nav-logo"><img src="../../css/assets/bvp_c.png"></a>
-            <div class="header-text">भारत विकास परिषद</div>
+            <div class="header-text">Bharat Vikas Parishad</div>
         </div>
         <div class="button-container">
             <a href="create/" class="text-inter-lg" id="host">Host a Game!</a>
@@ -35,6 +35,7 @@
 
     <section class="create-section flex-section">
         <div class="create-form">
+            <br><br>
             <h4>Create your game here!</h4>
             <form id="create-room-form" name="create-room-form">
                 <div class="input-grp">
@@ -61,21 +62,26 @@
                 <div class ="input-grp">
                     <label for="mcq-positive">Marks for MCQ response</label>
                     <div class="mcq-wrapper">
-                        <input id="mcq-positive" type="number" placeholder="10" min="0" required />
-                        <input id="mcq-negative" type="number" placeholder="5" min="0" required />
+                        <input id="mcq-positive" type="number" placeholder="+correct" min="0" required />
+                        <input id="mcq-negative"  style="border: 1px solid red;"  type="number" placeholder="-wrong" min="0" required />
                     </div>
                 </div>
                 <div class="input-grp">
                     <label for="buzzer-positive">Marks for buzzer response</label>
                     <div class="buzzer-wrapper">
-                        <input id="buzzer-positive" type="number" placeholder="10" min="0" required />
-                        <input id="buzzer-negative" type="number" placeholder="5" min="0" required />
+                        <input id="buzzer-positive" type="number" placeholder="+correct" min="0" required />
+                        <input id="buzzer-negative" style="border: 1px solid red;" type="number" placeholder="-wrong" min="0" required />
                     </div>
                 </div>
 
                 <div class="button-grp">
-                    <button id="create-quiz" disabled>Create Quiz</button>
-                </div>
+                <button style="height: 6vh ; width: 12vw;" class="button-82-pushable" role="button" disabled>
+                    <span class="button-82-shadow"></span>
+                    <span class="button-82-edge"></span>
+                    <span class="button-82-front text">
+Create quiz                    </span>
+                  </button>
+                  </div>
             </form>
         </div>
     </section>
