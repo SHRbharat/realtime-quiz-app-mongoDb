@@ -1,4 +1,5 @@
 var socket = io();
+//marks are all positive
 //Gets {id,quiz_type,mcq_p,mcq_n,buzzer_p,buzzer_n,no_mcq,no_buzzer} from url
 var params = jQuery.deparam(window.location.search); 
 
@@ -8,7 +9,7 @@ let correctAns = null;
 let currQuesType = null;
 let questionEnded = false;
 let time = 0;
-
+let newLeader = ""
 
 let playersCount = 0
 let currentQuestionIndex = 0
@@ -17,15 +18,18 @@ let round = {
     current : 1
 }
 
+console.log(document.getElementById("responseTable"))
 
 //buttons (leaderboard , next , end , response)
 const controlBtns = document.querySelectorAll('.control-strip button')
-const headerInfo = document.querySelectorAll('.header-info span');
+//players , round , answered, questions
+const headerInfo = document.querySelectorAll('header table tr td:nth-child(even)');
 const mainDisplay = document.querySelector(".main-display")
 
 //When host connects to server
 socket.on('connect', function () {
     // socket.emit('identifyUser', { role: 'host' });
+    document.querySelector("#app").style.display = 'none'
 
     // console.log("emiitnf host-join-game")
     socket.emit('host-join-game', params.id);
@@ -56,6 +60,14 @@ socket.on('gameQuestions', function (data) {
         }else if(data.questionData.type === "buzzer"){
             console.log("buzzer")
             setMainDisplay("buzzer") 
+            
+        }
+    }else{
+        if(data.questionData.type === "buzzer"){
+            const buzzerDetails = document.querySelector(".buzzer-details p");
+            if (buzzerDetails && !buzzerDetails.classList.contains("hidden")) {
+                toggleLottieContent()
+            }
         }
     }
 
@@ -69,6 +81,9 @@ socket.on('gameQuestions', function (data) {
         }, 2);
         correctAns = data.questionData[`op${data.questionData.correct}`]
     }else{
+        setTimeout(function () {
+            controlBtns[1].disabled = false;
+        }, 5000); 
         correctAns = data.questionData.correct
     }
     currQuesType = data.questionData.type
@@ -77,7 +92,7 @@ socket.on('gameQuestions', function (data) {
 
 socket.on('updatePlayersAnswered', function (data) {
     console.log("player Answered , count :",data)
-    document.querySelector('.header-info .left p:nth-child(2) span').textContent= data;
+    headerInfo[2].textContent = data;
 });
 
 //data = {hostId,playerId,name}
@@ -90,32 +105,21 @@ socket.on("firstToBuzzer", (data)=>{
 
     showToast(`wait for ${data.name} to answer the question , then click on responses`)
     controlBtns[3].disabled = false
+
+    //animation
+    document.querySelector(".buzzer-details p span").textContent = `${data.name} `
+    toggleLottieContent()
+    showBothBuzzerResponse()
+
+    //set-up responses-display
     document.querySelector(".responses-section .answer p").textContent = correctAns
-
-    //render
     document.querySelector(".buzzer-response-display p span").textContent = data.name;
-        
-    document.getElementById('correct-buzzer').addEventListener('click',()=>{
-        socket.emit("updateBuzzerScores",{
-            "player" : data,
-            "res" : true})
-
-        //display animation
-        console.log("player's answer was correct")
-    })
-    document.getElementById('incorrect-buzzer').addEventListener('click',()=>{
-        socket.emit("updateBuzzerScores",{
-            "player" : data,
-            "res" : false})
-
-        //display animation
-        console.log("player's answer was not correct")
-    })
 })
 
 //logic for handling end of question (data = {playerData , correctAnswer} 
 //data =  {hostId,playerId,name}) ==> for buzzer questions received twice,player buzzers
 //after updting scores ==> 1st one
+
 socket.on('questionOver', (data)=> {
     console.log("question over : " , data)
     
@@ -126,11 +130,12 @@ socket.on('questionOver', (data)=> {
         document.querySelector(".responses-section .answer p").textContent = correctAns
         stopTimer();
         //clear contents
-        const container = document.querySelector('.mcq-response-display');
+        const container = document.getElementById("responseTable");
+        container.innerHTML = "";
         // Select all child elements except the <p> tag
-        while (container.lastElementChild && container.lastElementChild.tagName !== 'P') {
-            container.removeChild(container.lastElementChild);
-        }
+        // while (container.lastElementChild && container.lastElementChild.tagName !== 'P') {
+        //     container.removeChild(container.lastElementChild);
+        // }
     
         let options = document.querySelectorAll(".option-panel div")
         let counter = 1;
@@ -154,15 +159,28 @@ socket.on('questionOver', (data)=> {
     renderLeaderboard(data)
 });
 
-
 socket.on('GameOver', function (data) {
     console.log("game over" ,data);
-    showToast("Game Over. Redirecting to results...")
+    showToast("Game Over. displaying final results...")
     setTimeout(function() {
-        window.location.href = `../../result/?id=${params.id}`;
-    }, 4000); 
-});
+        // window.location.href = `../../result/?id=${params.id}`;
+    
+        document.querySelector("section").style.display = 'none'
+        document.querySelector(".leaderboard-section").style.display = 'none'
+        document.querySelector(".responses-section").style.display = 'none'
 
+        document.querySelector("#app").style.display = 'grid'
+        document.getElementById("close-game").style.display = 'block'
+        if (data[0].name !== newLeader) {
+            newLeader = data[0].name;
+        }
+       
+        //render top-3
+        let topThree = data.slice(0, 3);
+        renderTopThree([topThree[2],topThree[0],topThree[1]]);
+        // renderAllPlayers(data);
+    }, 2000); 
+});
 
 socket.on("error", function (message) {
     console.log("Error: " + message);
@@ -190,20 +208,20 @@ function setHeaderInfo(players = -1 , answered = -1){
     }
 
     if(answered != -1){
-        headerInfo[1].textContent = answered
+        headerInfo[2].textContent = answered
     }
 
     //set fields on first question of round
     if (currentQuestionIndex == 1) {
         if(params.quiz_type == 0 || params.quiz_type == 1){
-            headerInfo[2].textContent = '1 / 1';
+            headerInfo[1].textContent = '1 / 1';
             headerInfo[3].textContent = params.quiz_type == 0 ? params.no_mcq : params.no_buzzer
         }else if(params.quiz_type == 2 || params.quiz_type == 3){
             if(round.current == 1){
-                headerInfo[2].textContent = '1 / 2';
+                headerInfo[1].textContent = '1 / 2';
                 headerInfo[3].textContent = params.quiz_type == 2 ? params.no_mcq : params.no_buzzer
             }else if(round.current == 2){
-                headerInfo[2].textContent = '2 / 2';
+                headerInfo[1].textContent = '2 / 2';
                 headerInfo[3].textContent = params.quiz_type == 3 ? params.no_mcq : params.no_buzzer
             }
         }
@@ -236,7 +254,7 @@ function setMainDisplay(type){
 
 function displayQuestion(questionData){
     console.log("inside DisplayQuestion")
-    document.querySelector(".que-header div").textContent = currentQuestionIndex
+    document.querySelector(".que-header div span").textContent = currentQuestionIndex
 
     const que_text = document.querySelectorAll(".que-body .text p")
     const options = document.querySelectorAll(".option-panel div")
@@ -314,37 +332,64 @@ function setupQuestioSubtype(type = 'text'){
         audio.classList.add('hidden')
     }
 }
-
 function addResponseItem(id, name, response, isCorrect) {
-    const container = document.querySelector('.mcq-response-display');
-    const item = document.createElement('div');
-    item.classList.add('item');
+    // Find the table
+    const mTable = document.getElementById("responseTable");
 
-    const idSpan = document.createElement('span');
-    idSpan.textContent = id;
-    item.appendChild(idSpan);
+    // Create a new row
+    const newRow = mTable.insertRow();
 
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = name;
-    item.appendChild(nameSpan);
+    // Create cells for the row
+    const idCell = newRow.insertCell(0);
+    const nameCell = newRow.insertCell(1);
+    const responseCell = newRow.insertCell(2);
+    const correctCell = newRow.insertCell(3);
 
-    const responseSpan = document.createElement('span');
-    responseSpan.textContent = response;
-    item.appendChild(responseSpan);
-
-    const statusSpan = document.createElement('span');
-    const icon = document.createElement('i');
+    // Fill cells with the provided data
+    idCell.textContent = id;
+    nameCell.textContent = name;
+    responseCell.textContent = response;
 
     if(isCorrect == null){
-        icon.classList.add('fa-solid','fa-comment-slash');
+        correctCell.innerHTML = '<i class="fa-solid fa-comment-slash"></i>';
     }else{
-        icon.classList.add('fa-solid', isCorrect ? 'fa-circle-check' : 'fa-circle-xmark');
+        correctCell.innerHTML = isCorrect ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-xmark"></i>';
     }
-    statusSpan.appendChild(icon);
-    item.appendChild(statusSpan);
-
-    container.appendChild(item);
 }
+// function addResponseItem(id, name, response, isCorrect) {
+//     const container = document.querySelector(".mcq-response-display table")
+//     if (!container) {
+//         console.error('Table container not found');
+//         return; // Stop execution if container is null
+//     }
+//     const item = document.createElement('tr');
+//     // item.classList.add('item');
+
+//     const idSpan = document.createElement('td');
+//     idSpan.textContent = id;
+//     item.appendChild(idSpan);
+
+//     const nameSpan = document.createElement('td');
+//     nameSpan.textContent = name;
+//     item.appendChild(nameSpan);
+
+//     const responseSpan = document.createElement('td');
+//     responseSpan.textContent = response;
+//     item.appendChild(responseSpan);
+
+//     const statusSpan = document.createElement('td');
+//     const icon = document.createElement('i');
+
+//     if(isCorrect == null){
+//         icon.classList.add('fa-solid','fa-comment-slash');
+//     }else{
+//         icon.classList.add('fa-solid', isCorrect ? 'fa-circle-check' : 'fa-circle-xmark');
+//     }
+//     statusSpan.appendChild(icon);
+//     item.appendChild(statusSpan);
+
+//     container.appendChild(item);
+// }
 
 // Function to add a leaderboard item
 function addLeaderboardItem(container, rank, name, points) {
@@ -452,7 +497,7 @@ const buzzerDisplay = document.querySelector('.buzzer-response-display');
 
 // Hide
 hideResponsesBtn.addEventListener('click', () => {
-    responsesSection.style.right = '-60rem'; 
+    responsesSection.style.right = '-100rem'; 
     mainDisplay.style.opacity = 1;
 });
 
@@ -468,7 +513,31 @@ function toggleResponseDisplay(type = 'mcq') {
     }
 }
 
+function toggleLottieContent() {
+    const loader = document.querySelector('.buzzer-details .loader');
+    const lottiePlayer = document.querySelector('.buzzer-details dotlottie-player');
+    const p = document.querySelector(".buzzer-details p")
 
+    lottiePlayer.classList.toggle('hidden');
+    p.classList.toggle('hidden')
+    loader.classList.toggle('hidden'); 
+}
+
+const correctBuzzer = document.getElementById('correct-buzzer');
+const incorrectBuzzer = document.getElementById('incorrect-buzzer');
+function toggleBuzzer(response) {
+    if (response === 'correct') {
+        incorrectBuzzer.style.display = 'none'; // Hide incorrect buzzer
+        correctBuzzer.play();                   // Play correct animation
+    } else if (response === 'incorrect') {
+        correctBuzzer.style.display = 'none';    // Hide correct buzzer
+        incorrectBuzzer.play();                  // Play incorrect animation
+    }
+}
+function showBothBuzzerResponse(){
+    correctBuzzer.style.display = 'block'
+    incorrectBuzzer.style.display = 'block'
+}
 
 //control buttons 
 //view-leader
@@ -478,19 +547,20 @@ controlBtns[0].addEventListener('click', ()=>{
 })
 //next-question
 controlBtns[1].addEventListener('click', ()=>{
-    headerInfo[1].textContent = "00"
+    headerInfo[2].textContent = "00"
     console.log("clicked next question")
     socket.emit('nextQuestion'); //Tell server to start new question
 })
 //end-button
 controlBtns[2].addEventListener('click', ()=>{
-    headerInfo[1].textContent = "00"
+    headerInfo[2].textContent = "00"
     if(controlBtns[2].ariaLabel == 'End Quiz'){
         console.log("end quiz clicked")
         showToast("Ending quiz , displaying results...")
-        setTimeout(function () {
-            window.location.href = `../../result/?id=${params.id}`; 
-        }, 4000);
+        // setTimeout(function () {
+        //     window.location.href = `../../result/?id=${params.id}`; 
+        // }, 4000);
+        socket.emit('nextQuestion');
     }else{
         console.log("clicked next round")
         socket.emit('nextQuestion'); //Tell server to start new question
@@ -541,4 +611,32 @@ controlBtns[3].addEventListener('click', ()=>{
         console.log("response button logic else")
         controlBtns[1].disabled = false;
       }
+})
+
+//buzzer response buttons
+document.getElementById('correct-buzzer').addEventListener('click',()=>{
+    socket.emit("updateBuzzerScores",{
+        "player" : buzzerPlayer,
+        "res" : true})
+
+    //display animation
+    toggleBuzzer('correct')
+    console.log("player's answer was correct")
+})
+document.getElementById('incorrect-buzzer').addEventListener('click',()=>{
+    socket.emit("updateBuzzerScores",{
+        "player" : buzzerPlayer,
+        "res" : false})
+
+    //display animation
+    toggleBuzzer('incorrect')
+    console.log("player's answer was not correct")
+})
+
+document.getElementById("close-game").addEventListener('click',()=>{
+    showToast("Ending game! Redirecting in 2 seconds...");
+    console.log("no question in the game");
+    setTimeout(function(){
+        window.location.href = '../../'; 
+    },2000); 
 })

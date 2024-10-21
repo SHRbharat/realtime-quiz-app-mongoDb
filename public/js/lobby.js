@@ -65,7 +65,7 @@ socket.on("hostDisconnect", function () {
 
 //When the host clicks start game, the player screen changes
 socket.on("gameStartedPlayer", function () {
-  window.location.href = `/player/game/?id=${socket.id}&quiz_type=${info.quiz_type}&mcq_p=${info.marks.mcq_p}&mcq_n=${info.marks.mcq_n}&buzzer_p=${info.marks.buzzer_p}&buzzer_n=${info.marks.buzzer_n}&no_mcq=${info.no_mcq}&no_buzzer=${info.no_buzzer}&db_id=${info.gameId}`;
+  window.location.href = `/player/game/?id=${socket.id}&quiz_type=${info.quiz_type}&mcq_p=${info.marks.mcq_p}&mcq_n=${-1 * info.marks.mcq_n}&buzzer_p=${info.marks.buzzer_p}&buzzer_n=${-1 * info.marks.buzzer_n}&no_mcq=${info.no_mcq}&no_buzzer=${info.no_buzzer}&db_id=${info.gameId}`;
 });
 
 socket.on("error", function (message) {

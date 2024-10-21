@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Dashboard | KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="../../../public/css/dashboard.css">
+    <link rel="stylesheet" href="../../../public/css/common.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="../../../public/css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="../../../public/css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <table>
+            <tr>
+                <td>Players</td>
+                <td>00</td>
+                <td>Round</td>
+                <td>1/2</td>
+            </tr>
+            <tr>
+                <td>Answered</td>
+                <td>00</td>
+                <td>Questions</td>
+                <td>20</td>
+            </tr>
+        </table>
+    </header>
+
+    <main>
+        <div class="rotating-image">
+            <img src="../../../public/css/assets/floral-1.png" alt="">
+        </div>
+        <!-- final leaderboard -->
+        <div class="container hidden" id="app">
+            <div class="leaders">
+                <h2>Final Results</h2>
+                <ul id="topThreeCatsList">
+                    <li>
+                        <div class="lead-cats">
+                            <img class="lead-cats__photo active-leaderboard" src="../../../public/css/assets/gold.png">
+                            <div class="podium pod-1">
+                                <div class="ranking-lead" style="background-color: #CD7F32">
+                                    1
+                                </div>
+                                <h4>Position Bronze</h4>
+                                <p>112 points</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="lead-cats">
+                            <img class="lead-cats__photo ${player.name === newLeader ? 'active-leaderboard' : ''}"
+                                src="../../../public/css/assets/silver.png">
+                            <div class="podium pod-2">
+                                <div class="ranking-lead" style="background-color: #FFD700">
+                                    2
+                                </div>
+                                <h4>Position Gold</h4>
+                                <p>150 points</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="lead-cats">
+                            <img class="lead-cats__photo ${player.name === newLeader ? 'active-leaderboard' : ''}"
+                                src="../../../public/css/assets/bronze.png">
+                            <div class="podium pod-3">
+                                <div class="ranking-lead" style="background-color:#C0C0C0">
+                                    3
+                                </div>
+                                <h4>Position Silver</h4>
+                                <p>134 points</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- <div class="board">
+                <h2>Leaderboard</h2>
+                <ul id="allCatsList">
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color: #1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color: #1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color:#1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color: #1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+
+        <button id="close-game" class="hidden" title="Close-Game"><i class="fa-solid fa-power-off"></i></button>
+
+
+        <section class="main-display flex-section">
+            <div class="left-panel">
+                <div class="question-card">
+                    <div class="marks-container">
+                        <div class="circle positive">10</div>
+                        <div class="circle negative">05</div>
+                    </div>
+                    <div class="que-header">
+                        <div class="count">Ques No. / प्र. सं. : <span>01</span></div>
+                    </div>
+                    <div class="que-body">
+                        <div class="text">
+                            <p class="hindi">भारत की राजधानी क्या है?</p>
+                            <p class="english">What is the capital of India?</p>
+                            <!-- only appears for some questions -->
+                            <audio controls class="hidden">
+                                <source src="../../uploads/670b5206c2375307987197db_audioFirst.mp3" type="audio/mpeg">
+                                <source src="" type="audio/ogg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="image-wrapper ">
+                            <!-- only appears for some questions -->
+                            <img src="../../uploads/670b5206c2375307987197db_que_1_img.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="option-panel">
+                    <div class="option">option1/राजधानी</div>
+                    <div class="option">option2/राजधानी</div>
+                    <div class="option">option3/राजधानी</div>
+                    <div class="option">option4/राजधानी</div>
+                </div>
+                <div class="buzzer-details hidden">
+                    <div class="loader"></div>
+                    <dotlottie-player class="hidden"
+                        src="https://lottie.host/6d95b951-89bf-45bb-826d-deea90050468/6qdjzkMV5Y.json"
+                        background="transparent" style="width:20rem;height:100%" speed="1" loop
+                        autoplay></dotlottie-player>
+
+                    <p class="hidden"><span>Player &nbsp;</span>Pressed the buzzer!</p>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="timer">
+                    <div class="time-remaining" id="time-display">60</div>
+                </div>
+                <div class="control-strip">
+                    <!-- aria-label is used in js to identify functionality of 3rd button -->
+                    <button id="view-leader" aria-label="Leaderboard" title="Leaderboard"><i
+                            class="fa-solid fa-award"></i></button>
+                    <button id="next-question" aria-label="Next Question" title="Next Question"><i
+                            class="fa-solid fa-angles-right"></i></button>
+                    <button id="end-button" aria-label="End Quiz" title="End Quiz"><i
+                            class="fa-solid fa-check"></i></button>
+                    <button id="view-response" aria-label="View Answers" title="View Answers"><i
+                            class="fa-regular fa-eye"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="leaderboard-section">
+        <div class="hide-leaderboard" id="hide-leaderboard"><i class="fa-solid fa-xmark"></i></div>
+        <div class="leaderboard-wrapper">
+            <p>LEADERBOARD</p>
+            <div class="tab-menu">
+                <div class="overall active">Overall</div>
+                <div class="buzzer-round">Buzzer</div>
+                <div class="mcq-round">MCQ</div>
+            </div>
+            <div class="leaderboard-items overall-tab active">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>1080 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Vikas Kumar</span>
+                    <span>1060 Pts</span>
+                </div>
+                <div class="item">
+                    <span>03.</span>
+                    <span>Somnath</span>
+                    <span>1040 Pts</span>
+                </div>
+            </div>
+            <div class="leaderboard-items buzzer-tab">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>540 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Somnath</span>
+                    <span>530 Pts</span>
+                </div>
+            </div>
+            <div class="leaderboard-items mcq-tab">
+                <div class="item">
+                    <span>01.</span>
+                    <span>Shivam Ray</span>
+                    <span>540 Pts</span>
+                </div>
+                <div class="item">
+                    <span>02.</span>
+                    <span>Vikas Kumar</span>
+                    <span>530 Pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="responses-section">
+        <div class="hide-responses"><i class="fa-solid fa-xmark"></i></div>
+        <div class="wrapper">
+            <div class="answer">
+                <p>Answer</p>
+            </div>
+            <div class="mcq-response-display active">
+                <p>Responses by Participants</p>
+                <table id="responseTable">
+                    <tr>
+                        <td>01</td>
+                        <td>Shivam Ray</td>
+                        <td>Answer</td>
+                        <td><i class="fa-solid fa-circle-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>02</td>
+                        <td>Vikas</td>
+                        <td>Answer</td>
+                        <td><i class="fa-solid fa-circle-xmark"></i></td>
+                    </tr>
+                    <tr>
+                        <td>03</td>
+                        <td>Somnath</td>
+                        <td>Answer</td>
+                        <td><i class="fa-solid fa-comment-slash"></i></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="buzzer-response-display">
+                <p>The answer from <span>Shivam</span> is :</p>
+
+                <div class="container">
+                    <dotlottie-player id="correct-buzzer"
+                        src="https://lottie.host/7a3a75d6-a3ee-4c2d-9f0a-345ee082871d/7fhJmqtCNM.json"
+                        background="transparent" speed="1" style="width: 27rem; height: 27rem" direction="1"
+                        playMode="normal" loop autoplay></dotlottie-player>
+                    <dotlottie-player id="incorrect-buzzer"
+                        src="https://lottie.host/14e0dee8-c089-4f4c-b297-b244ee72a3ea/pXfx8UgvCR.json"
+                        background="transparent" speed="1" style="width: 22rem; height: 22rem;" loop
+                        autoplay></dotlottie-player>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirmation box -->
+    <div class="div-confirmation-outer" id="confirmationBox">
+        <div class="div-confirmation-box">
+            <h2 class="div-confirmation-title">Are you sure?</h2>
+            <p class="div-confirmation-message">Do you really want to proceed with this action?</p>
+            <div class="div-confirmation-actions">
+                <button class="div-confirmation-btn div-confirmation-confirm">Confirm</button>
+                <button class="div-confirmation-btn div-confirmation-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="../../../public/js/common.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+
+    <!-- java-script -->
+    <!-- <script src="../../../public/js/common.js"></script> -->
+    <script>
+        function toggleLottieContent() {
+            const buzzerDetails = document.querySelector('.buzzer-details');
+            const loader = document.querySelector('.buzzer-details .loader');
+            const lottiePlayer = document.querySelector('.buzzer-details dotlottie-player');
+            const p = document.querySelector(".buzzer-details p")
+
+            lottiePlayer.classList.toggle('hidden');
+            p.classList.toggle('hidden')
+            loader.classList.toggle('hidden');
+        }
+
+        const correctBuzzer = document.getElementById('correct-buzzer');
+        const incorrectBuzzer = document.getElementById('incorrect-buzzer');
+        function toggleBuzzer(response) {
+            if (response === 'correct') {
+                incorrectBuzzer.style.display = 'none'; // Hide incorrect buzzer
+                correctBuzzer.play();                   // Play correct animation
+            } else if (response === 'incorrect') {
+                correctBuzzer.style.display = 'none';    // Hide correct buzzer
+                incorrectBuzzer.play();                  // Play incorrect animation
+            }
+        }
+        function showBothBuzzerResponse() {
+            correctBuzzer.style.display = 'block'
+            incorrectBuzzer.style.display = 'block'
+        }
+
+
+        //buttons (leaderboard , next , end , response)
+        const controlBtns = document.querySelectorAll('.control-strip button')
+        const headerInfo = document.querySelectorAll('.header-info span');
+        const mainDisplay = document.querySelector(".main-display")
+
+        //leaderboard-mini
+        const hideBtn = document.querySelector('.hide-leaderboard');
+        const leaderboardSection = document.querySelector('.leaderboard-section');
+        const tabButtons = document.querySelectorAll('.tab-menu div');
+        const tabs = document.querySelectorAll('.leaderboard-items');
+
+        //hide
+        hideBtn.addEventListener('click', () => {
+            leaderboardSection.style.right = '-60rem';
+            mainDisplay.style.opacity = 1;
+        });
+
+        // Function to switch between tabs
+        tabButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and tabs
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabs.forEach(tab => tab.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding tab
+                button.classList.add('active');
+                tabs[index].classList.add('active');
+            });
+        });
+
+        //response section
+        const hideResponsesBtn = document.querySelector('.hide-responses');
+        const responsesSection = document.querySelector('.responses-section');
+        const mcqDisplay = document.querySelector('.mcq-response-display');
+        const buzzerDisplay = document.querySelector('.buzzer-response-display');
+
+        // Hide
+        hideResponsesBtn.addEventListener('click', () => {
+            responsesSection.style.right = '-102rem';
+            mainDisplay.style.opacity = 1;
+        });
+
+        //control buttons 
+        //view-leader
+        controlBtns[0].addEventListener('click', () => {
+            leaderboardSection.style.right = '10rem';
+            mainDisplay.style.opacity = 0;
+        })
+        //next-question
+        controlBtns[1].addEventListener('click', () => {
+            // headerInfo[1].textContent = "00"
+            console.log("clicked next question")
+            toggleLottieContent()
+        })
+        //end-button
+        controlBtns[2].addEventListener('click', () => {
+            headerInfo[1].textContent = "00"
+            if (controlBtns[2].ariaLabel == 'End Quiz') {
+                console.log("end quiz clicked")
+                showToast("Ending quiz , displaying results...")
+            } else {
+                console.log("clicked next round")
+            }
+        })
+
+        function toggleResponseDisplay(type = 'mcq') {
+            console.log("called response display", type)
+            if (type === 'mcq') {
+                mcqDisplay.classList.add('active');
+                buzzerDisplay.classList.remove('active');
+            } else if (type === 'buzzer') {
+                buzzerDisplay.classList.add('active');
+                mcqDisplay.classList.remove('active');
+            }
+        }
+        //view-response
+        controlBtns[3].addEventListener('click', () => {
+            console.log("Response button clicked ")
+
+            //toggle from here
+            toggleResponseDisplay('mcq');
+
+            mainDisplay.style.opacity = 0;
+            responsesSection.style.right = '10rem';
+        })
+
+        //buzzer response buttons
+        correctBuzzer.addEventListener('click', () => {
+
+            toggleBuzzer('correct')
+            //display animation
+            console.log("player's answer was correct")
+        })
+        incorrectBuzzer.addEventListener('click', () => {
+
+            toggleBuzzer('incorrect')
+            //display animation
+            console.log("player's answer was not correct")
+        })
+
+        console.log(document.getElementById("responseTable"))
+        function addResponseItem(id, name, response, isCorrect) {
+            // Find the table
+            const table = document.getElementById("responseTable");
+
+            // Create a new row
+            const newRow = table.insertRow();
+
+            // Create cells for the row
+            const idCell = newRow.insertCell(0);
+            const nameCell = newRow.insertCell(1);
+            const responseCell = newRow.insertCell(2);
+            const correctCell = newRow.insertCell(3);
+
+            // Fill cells with the provided data
+            idCell.textContent = id;
+            nameCell.textContent = name;
+            responseCell.textContent = response;
+
+            // For the correctCell, add an icon based on the isCorrect value
+            if (isCorrect) {
+                correctCell.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            } else {
+                correctCell.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+            }
+        }
+
+        addResponseItem(12,"bhan","nehs",true)
+    </script>
+
+</body>
+
+</html>

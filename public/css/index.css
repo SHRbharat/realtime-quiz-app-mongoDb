@@ -23,7 +23,7 @@ html {
 body {
     height: 100vh;
     width: 100%;
-    overflow: auto;
+    overflow:hidden;
     background-image: url("assets/home-bg.webp");
 }
 
@@ -536,6 +536,11 @@ input[type="file"]::file-selector-button:active {
     position: relative;
     width: 100%;
     text-align: left;
+    transition: all .2s ease-in-out;
+}
+
+.games-container .game-item p:hover{
+    font-weight: bold;
 }
 
 .games-container .game-item p i {
@@ -543,6 +548,13 @@ input[type="file"]::file-selector-button:active {
     right: 1rem;
     font-size: 3rem;
     color: var(--Primary-2);
+    transition: all .3s ease-in-out;
+}
+
+.games-container .game-item p i:hover {
+    transform: rotate(180deg);
+    filter: drop-shadow(0px 4px 8px #06ba63);
+    cursor: pointer;
 }
 
 /* popup */
@@ -646,7 +658,7 @@ input[type="file"]::file-selector-button:active {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #0f0f0f;
 }
 
 .player-lobby-section h4 ,
@@ -709,11 +721,11 @@ input[type="file"]::file-selector-button:active {
     width : 100%;
     text-align: right;
     margin-top: 1rem;
-    color: #fff;
+    color: #750909;
 }
 
 .host-lobby-section .players-in-room span{
-    color: var(--White);
+    color: #750909;
     text-shadow: 2px 2px 4px rgba(9, 231, 50, 0.5);
 }
 
@@ -759,7 +771,7 @@ input[type="file"]::file-selector-button:active {
 .loader {
     border: 8px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    border-top: 8px solid #10eddb;
+    border-top: 8px solid #5d0606;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
     width: 80px;
@@ -791,7 +803,6 @@ input[type="file"]::file-selector-button:active {
 .player-lobby-section .details-row:hover ,
 .host-lobby-section .details-row:hover{
     background-color: rgba(255, 255, 255, 0.1);
-    /* Hover effect */
 }
 
 .player-lobby-section .details-row span:first-child,
@@ -805,6 +816,7 @@ input[type="file"]::file-selector-button:active {
     position: absolute;
     right: 1rem;
     font-size: 1.2rem;
+    font-weight: bold;
 }
 
 /* ICE CUBE CSS */

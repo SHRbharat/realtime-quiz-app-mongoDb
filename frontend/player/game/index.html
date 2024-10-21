@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Dashboard | KNIT</title>
+    <!-- google fonts - dm sans , inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&family=Inter&display=swap" rel="stylesheet">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- page stylesheet -->
+    <link rel="stylesheet" href="../../../public/css/dashboard.css">
+    <link rel="stylesheet" href="../../../public/css/common.css">
+
+    <style>
+        .main-display .right-panel{
+            justify-content: flex-start;
+            padding-top: 3rem;
+        }
+        .option-panel .option:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-logo-container">
+            <a href="#" class="nav-logo"><img src="../../../public/css/assets/knit.png"></a>
+            <div class="vertical-line"></div>
+            <a href="#" class="nav-logo"><img src="../../../public/css/assets/bvp_c.png"></a>
+            <div class="header-text">भारत विकास परिषद</div>
+        </div>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>Shivam</td>
+                <td>Round</td>
+                <td>1/2</td>
+            </tr>
+            <tr>
+                <td>Score</td>
+                <td>123</td>
+                <td>Questions</td>
+                <td>20</td>
+            </tr>
+        </table>
+    </header>
+    
+    <main>
+        <div class="rotating-image">
+            <img src="../../../public/css/assets/floral-1.png" alt="">
+        </div>
+        <!-- final leaderboard -->
+        <div class="container hidden" id="app">
+            <div class="leaders">
+                <h2>Final Results</h2>
+                <ul id="topThreeCatsList">
+                    <li>
+                        <div class="lead-cats">
+                            <img class="lead-cats__photo active-leaderboard"
+                                src="../../../public/css/assets/gold.png">
+                            <div class="podium pod-1">
+                                <div class="ranking-lead" style="background-color: #CD7F32">
+                                    1
+                                </div>
+                                <h4>Position Bronze</h4>
+                                <p>112 points</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="lead-cats">
+                            <img class="lead-cats__photo ${player.name === newLeader ? 'active-leaderboard' : ''}"
+                                src="../../../public/css/assets/silver.png">
+                            <div class="podium pod-2">
+                                <div class="ranking-lead" style="background-color: #FFD700">
+                                    2
+                                </div>
+                                <h4>Position Gold</h4>
+                                <p>150 points</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="lead-cats">
+                            <img class="lead-cats__photo ${player.name === newLeader ? 'active-leaderboard' : ''}"
+                                src="../../../public/css/assets/bronze.png">
+                            <div class="podium pod-3">
+                                <div class="ranking-lead" style="background-color:#C0C0C0">
+                                    3
+                                </div>
+                                <h4>Position Silver</h4>
+                                <p>134 points</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- <div class="board">
+                <h2>Leaderboard</h2>
+                <ul id="allCatsList">
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color: #1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color: #1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color:#1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                    <li class="cat-item">
+                        <div class="cat-item__photo">
+                            <div class="ranking" style="background-color: #1ca1fa">
+                                ${index + 1}
+                            </div>
+                            <img src="../../css/assets/${trophy[index].photo}.png">
+                        </div>
+                        <div class="cat-item__info">
+                            <h4>${player.name}</h4>
+                        </div>
+                        <div class="cat-item__points">
+                            <p>${player.score}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        <button id="close-game " class="hidden" title="Close-Game"><i class="fa-solid fa-power-off"></i></button>
+
+        
+
+        <section class="main-display flex-section">
+            <div class="loader-wrapper hidden">
+                <div class="loader"></div>
+                <p>Waiting for next question...</p>
+            </div>
+            <div class="left-panel">
+                <div class="question-card">
+                    <div class="marks-container">
+                        <div class="circle positive">10</div>
+                        <div class="circle negative">05</div>
+                    </div>
+                    <div class="que-header">
+                        <div class="count">Ques No. / प्र. सं. : <span>01</span></div>
+                    </div>
+                    <div class="que-body">
+                        <div class="text">
+                            <p class="hindi">भारत की राजधानी क्या है?</p>
+                            <p class="english">What is the capital of India?</p>
+                            <!-- only appears for some questions -->
+                            <audio controls class="hidden">
+                                <source src="" type="audio/mpeg">
+                                <source src="" type="audio/ogg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="image-wrapper hidden">
+                            <!-- only appears for some questions -->
+                            <img src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="option-panel hidden">
+                    <div class="option" id="answer1">op1</div>
+                    <div class="option" id="answer1">op2</div>
+                    <div class="option" id="answer1">op3</div>
+                    <div class="option" id="answer1">op4</div>
+                </div>
+                <div class="buzzer-btn" id="buzzer-btn">
+                    <i class="fa-solid fa-bell"></i>
+                    <p>Press Buzzer!</p>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="timer">
+                    <div class="time-remaining" id="time-display">60</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="result-container">
+        <dotlottie-player id="correct-buzzer" src="https://lottie.host/7a3a75d6-a3ee-4c2d-9f0a-345ee082871d/7fhJmqtCNM.json" background="transparent" speed="1" style="width: 27rem; height: 27rem" direction="1" playMode="normal" loop autoplay></dotlottie-player>
+        <p class="first" style="color:#3eac1f">Correct Answer!</p>
+        <dotlottie-player id="incorrect-buzzer" src="https://lottie.host/14e0dee8-c089-4f4c-b297-b244ee72a3ea/pXfx8UgvCR.json" background="transparent" speed="1" style="width: 22rem; height: 22rem;" loop autoplay></dotlottie-player>
+        <p class="second" style="color:#d05a24">Incorrect Answer!</p>
+    </div>
+
+    <!-- confirmation box -->
+    <div class="div-confirmation-outer" id="confirmationBox">
+        <div class="div-confirmation-box">
+        <h2 class="div-confirmation-title">Are you sure?</h2>
+        <p class="div-confirmation-message">Do you really want to proceed with this action?</p>
+        <div class="div-confirmation-actions">
+            <button class="div-confirmation-btn div-confirmation-confirm">Confirm</button>
+            <button class="div-confirmation-btn div-confirmation-cancel">Cancel</button>
+        </div>
+        </div>
+    </div>
+
+    
+    
+    <div id="toast-container"></div>
+
+    <!-- java-script -->
+    
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="../../../public/js/common.js"></script>
+    <!-- <script src = "../../js/playerGame.js"></script> -->
+
+    <script>
+        const correctBuzzer = document.getElementById('correct-buzzer');
+        const incorrectBuzzer = document.getElementById('incorrect-buzzer');
+        const animeCont = document.querySelector(".result-container")
+        const text = document.querySelectorAll(".result-container p")
+        function showResult(isCorrect) {
+            animeCont.style.visibility = 'visible';
+            if (isCorrect) {
+                correctBuzzer.style.display = 'block';  
+                text[0].style.display = 'block';  
+                incorrectBuzzer.style.display = 'none';   
+                text[1].style.display = 'none';
+            } else {
+                correctBuzzer.style.display = 'none';  
+                text[0].style.display = 'none';   
+                incorrectBuzzer.style.display = 'block'; 
+                text[1].style.display = 'block'; 
+            }
+        }
+        
+        function displayResultWithTimeout(isCorrect) {
+            showResult(isCorrect);
+            
+            // Set a timeout to undo the effects after 5 seconds
+            setTimeout(() => {
+                // Hide the anime container
+                animeCont.style.visibility = 'hidden';
+                
+                // Hide both Lottie players and texts
+                correctBuzzer.style.display = 'none';  
+                incorrectBuzzer.style.display = 'none';  
+                text[0].style.display = 'none';   
+                text[1].style.display = 'none';
+            }, 5000); 
+        }
+
+
+        displayResultWithTimeout(true)
+
+
+    </script>
+</body>
+</html>

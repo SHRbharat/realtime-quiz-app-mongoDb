@@ -53,27 +53,6 @@ app.post(
   }
 );
 
-// route to list files by user ID
-// app.get("/files/:userId", (req, res) => {
-//   const userId = req.params.userId;
-//   const uploadDir = path.join(publicPath, "uploads");
-//   console.log("reading", userId,uploadDir)
-//   // Read the files from the upload directory
-//   fs.readdir(uploadDir, (err, files) => {
-//     if (err) {
-//       return res.status(500).send("Error reading files");
-//     }
-
-//     // Filter files by userId prefix and valid extensions for images and audio
-//     const userFiles = files.filter(file => file.startsWith(`${userId}_`));
-//     const images = userFiles.filter(file => file.match(/\.(jpg|jpeg|png|gif)$/i)); // case-insensitive match for images
-//     const audio = userFiles.filter(file => file.match(/\.(mp3|wav|ogg)$/i)); // case-insensitive match for audio
-
-//     console.log(images,audio)
-//     res.json({ images, audio });
-//   });
-// });
-
 //Starting server on port 3000
 server.listen(3000, () => {
   console.log("Server started on port 3000");
@@ -673,67 +652,31 @@ io.on("connection", (socket) => {
             }
           } else {
             // Send the final leaderboard if no more questions
-            var playersInGame = players.getPlayers(game.hostId);
-            io.to(game.pin).emit("GameOver", playersInGame);
+            let playersInGame = players.getPlayers(game.hostId);
+            // Sort players by their scores
+            playersInGame.sort(
+              (a, b) =>
+                b.gameData.score_mcq +
+                b.gameData.score_buzzer -
+                (a.gameData.score_mcq + a.gameData.score_buzzer)
+            );
+
+            // Create leaderboard data
+            const leaderboardData = playersInGame.map((player) => ({
+              name: player.name,
+              score: player.gameData.score_mcq + player.gameData.score_buzzer,
+            }));
+
+            while (leaderboardData.length < 3) {
+              leaderboardData.push(undefined); // Push undefined for less players
+            }
+            console.log("leadetvoard ", leaderboardData)
+            io.to(game.pin).emit("GameOver", leaderboardData);
           }
 
           db.close();
         });
     });
-  });
-
-  //send final leaderboard
-  socket.on("get-leaderboard", (id) => {
-    console.log("<< get-leaderboard >>");
-    try {
-      var player = players.getPlayer(id);
-
-      // If player is found
-      if (player) {
-        var game = games.getGame(player.hostId);
-
-        // Ensure game exists
-        if (!game) {
-          console.warn(`No game found for hostId: ${player.hostId}`);
-          socket.emit("noGameFound");
-          return;
-        }
-
-        player.playerId = socket.id; // Update player id with current socket id
-
-        // Get all players in the game
-        var playersInGame = players.getPlayers(game.hostId);
-
-        if (!playersInGame || playersInGame.length === 0) {
-          console.error("No players found for game:", game.pin);
-          socket.emit("error", "No players found.");
-          return;
-        }
-
-        // Sort players by their scores
-        playersInGame.sort(
-          (a, b) =>
-            b.gameData.score_mcq +
-            b.gameData.score_buzzer -
-            (a.gameData.score_mcq + a.gameData.score_buzzer)
-        );
-
-        // Create leaderboard data
-        const leaderboardData = playersInGame.map((player) => ({
-          name: player.name,
-          score: player.gameData.score_mcq + player.gameData.score_buzzer,
-        }));
-
-        // Send leaderboard data back to the requesting client
-        socket.emit("leaderboardData", { leaderboard: leaderboardData });
-
-        // Log the leaderboard for debugging
-        console.log("Leaderboard sent to client:", leaderboardData);
-      }
-    } catch (error) {
-      console.log("error : ", error);
-      socket.emit("error", error);
-    }
   });
 
   // Handle player's answer submission
@@ -758,7 +701,7 @@ io.on("connection", (socket) => {
     let responseReceivedTime = Date.now();
     let responseTimeAllowed = game.gameData.time + 2; // Adding 2 seconds tolerance
     console.log(
-      "Player answered:",
+      "Player answered <<before upadating marks >>:",
       player,
       num,
       questionSentTime,
@@ -770,8 +713,7 @@ io.on("connection", (socket) => {
     if (game.gameData.questionLive) {
       // Only process answer if the question is still live
       player.gameData.answer = num;
-      game.gameData.playersAnswered += 1;
-
+      
       // Check if the response was within the allowed time limit
       if (
         (responseReceivedTime - questionSentTime) / 1000 <=
@@ -794,18 +736,27 @@ io.on("connection", (socket) => {
 
       // Check if all players have answered (MCQ)
       if (num >= 1 && num <= 4) {
-        var playerNum = players.getPlayers(hostId); // Get total players
-        if (game.gameData.playersAnswered === playerNum.length) {
+        var playersData = players.getPlayers(hostId); // Get total players
+        game.gameData.playersAnswered += 1;
+        console.log("Players answered : ", game.gameData.playersAnswered)
+        io.to(hostId).emit(
+          "updatePlayersAnswered",
+          game.gameData.playersAnswered
+        );
+
+        if (game.gameData.playersAnswered === playersData.length) {
+
           game.gameData.questionLive = false; // End question since all players answered
-          var playerData = players.getPlayers(game.hostId);
-          io.to(game.pin).emit("questionOver", playerData);
-        } else {
-          // Update host with the number of players who have answered so far
-          console.log("Players answered : ", game.gameData.playersAnswered)
-          io.to(game.pin).emit(
-            "updatePlayersAnswered",
-            game.gameData.playersAnswered
-          );
+          
+          //individual data to individauls
+          playersData.forEach((ob)=>{
+            io.to(ob.playerId).emit("questionOver",ob)
+          })
+
+          //whole data to host
+          io.to(hostId).emit("questionOver",playersData)
+
+          console.log("question Data from playerAnswer")
         }
       }
     } else {
@@ -874,17 +825,16 @@ io.on("connection", (socket) => {
     }
 
     // Fetch updated player data
-    var playerData = players.getPlayers(game.hostId);
+    var playersData = players.getPlayers(game.hostId);
 
     try{
       //send leaderboard to only host
-      socket.emit("questionOver",playerData);
-
-      // //broadcast buzzered player to all socekts ,except host
-      // socket.broadcast.to(game.pin).emit("questionOver", player)
-      // io.sockets.sockets.get(socket.id)?.emit('skip-event'); // Optionally inform the host, or ensure the host is excluded.
-      
-      io.to(game.pin).emit("buzzerQuestionOver", player);
+      socket.emit("questionOver",playersData);
+      //individual data to individauls
+      playersData.forEach((ob)=>{
+        io.to(ob.playerId).emit("buzzerQuestionOver",ob)
+      })
+      // io.to(game.pin).emit(, player);
     }catch(error){
       console.log(error)
     }
@@ -922,16 +872,18 @@ io.on("connection", (socket) => {
       game.gameData.questionLive = false;
 
       // Retrieve player data for the host
-      var playerData = players.getPlayers(game.hostId);
+      var playersData = players.getPlayers(game.hostId);
 
-      // console.log("Time's up: ", playerData);
+      console.log("Time's up: ", playersData);
 
-      // Notify all players that the question period is over
-      // io.to(game.pin).emit("questionOver", {
-      //   playerData,
-      //   correctAnswer: game.gameData.correctAnswer,
-      // });
-      io.to(game.pin).emit("questionOver", playerData);
+      // io.to(game.pin).emit("questionOver", playerData);
+      //individual data to individauls
+      playersData.forEach((ob)=>{
+        io.to(ob.playerId).emit("questionOver",ob)
+      })
+
+      //whole data to host
+      io.to(socket.id).emit("questionOver",playersData)
     } else {
       // Handle the case where the game is not found
       console.error("Game not found for socket ID:", socket.id);

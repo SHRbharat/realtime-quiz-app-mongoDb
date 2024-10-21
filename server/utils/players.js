@@ -1,3 +1,6 @@
+// hostId : socketId of game host 
+// playerId : socketId of player 
+// gameData : {answer,responseTime,score_buzzer,score_mcq
 class Players {
     constructor () {
         this.players = [];

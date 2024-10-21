@@ -103,3 +103,79 @@ function stopTimer() {
   console.log("stopTimer() called , inside")
   clearInterval(timerInterval);
 }
+
+
+//leaderboard
+const trophy = [
+  { r: 2, c: "#d6a21e" ,photo :"bronze"},
+  { r: 0, c: "#d6cd1e" ,photo :"gold"},
+  { r: 1, c: "#bbbbbb" ,photo :"silver"}
+];
+
+function renderTopThree(topThree) {
+  const topThreeCont = document.getElementById('topThreeCatsList');
+  topThreeCont.innerHTML = '';
+
+  // const topThreeCats = getTopThreeCats();
+  topThree.forEach((player, index) => {
+      const li = document.createElement('li');
+      if(!player){
+        li.innerHTML = `
+            <div class="lead-cats">
+                <img class="lead-cats__photo"
+                    src="../../css/assets/${trophy[index].photo}.png">
+                <div class="podium pod-${index + 1}">
+                    <div class="ranking-lead" style="background-color: ${trophy[index].c}">
+                        ${trophy[index].r + 1}
+                    </div>
+                    <h4>No Player</h4>
+                    <p>0 points</p>
+                </div>
+            </div>
+        `;
+      }else{
+        li.innerHTML = `
+            <div class="lead-cats">
+                <img class="lead-cats__photo ${player.name === newLeader ? 'active-leaderboard' : ''}"
+                    src="../../css/assets/${trophy[index].photo}.png">
+                <div class="podium pod-${index + 1}">
+                    <div class="ranking-lead" style="background-color: ${trophy[index].c}">
+                        ${trophy[index].r + 1}
+                    </div>
+                    <h4>${player.name}</h4>
+                    <p>${player.score} points</p>
+                </div>
+            </div>
+        `;
+      }
+      topThreeCont.appendChild(li);
+  });
+}
+
+function renderAllPlayers(leaderboard) {
+  const allPlayersList = document.getElementById('allCatsList');
+  allPlayersList.innerHTML = '';
+
+  leaderboard = leaderboard.filter(Boolean); // Remove undefined players
+
+  leaderboard.forEach((player, index) => {
+      const li = document.createElement('li');
+      li.className = 'cat-item';
+      li.innerHTML = `
+          <div class="cat-item__photo">
+              <div class="ranking" style="background-color: ${index < 3 ? trophy[index].c : '#1ca1fa'}">
+                  ${index + 1}
+              </div>
+              <img src="../../css/assets/${trophy[index].photo}.png">
+          </div>
+          <div class="cat-item__info">
+              <h4>${player.name}</h4>
+          </div>
+          <div class="cat-item__points">
+              <p>${player.score}</p>
+          </div>
+      `;
+
+      allCatsList.appendChild(li);
+  });
+}

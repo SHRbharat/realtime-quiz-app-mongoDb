@@ -25,23 +25,40 @@
             <a href="#" class="nav-logo"><img src="../../css/assets/bvp_c.png"></a>
             <div class="header-text">भारत विकास परिषद</div>
         </div>
-        <div class="header-info">
-            <div class="left">
-                <p>Players &nbsp;&nbsp;&nbsp;&nbsp;: <span>00</span></p>
-                <p>Answered : <span>00</span></p>
-            </div>
-            <div class="line"></div>
-            <div class="right">
-                <p>Round &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>1/2</span></p>
-                <p>Questions : <span>20</span></p>
-            </div>
-        </div>
+        <table>
+            <tr>
+                <td>Players</td>
+                <td>00</td>
+                <td>Round</td>
+                <td>1/2</td>
+            </tr>
+            <tr>
+                <td>Answered</td>
+                <td>00</td>
+                <td>Questions</td>
+                <td>20</td>
+            </tr>
+        </table>
     </header>
 
     <main>
         <div class="rotating-image">
             <img src="../../css/assets/floral-1.png" alt="">
         </div>
+        <!-- final leaderboard -->
+        <div class="container" id="app">
+            <div class="leaders">
+                <h2>Final Results</h2>
+                <ul id="topThreeCatsList"></ul>
+            </div>
+            <!-- <div class="board">
+                <h2>Leaderboard</h2>
+                <ul id="allCatsList"></ul>
+            </div> -->
+        </div>
+
+        <button id="close-game" class="hidden" title="Close-Game"><i class="fa-solid fa-power-off"></i></button>
+        
         <section class="main-display flex-section">
             <div class="left-panel">
                 <div class="question-card">
@@ -50,7 +67,7 @@
                         <div class="circle negative">05</div>
                     </div>
                     <div class="que-header">
-                        <div class="circle count">01</div>
+                        <div class="count">Ques No. / प्र. सं. : <span>01</span></div>
                     </div>
                     <div class="que-body">
                         <div class="text">
@@ -70,12 +87,18 @@
                     </div>
                 </div>
                 <div class="option-panel">
-                    <div class="option">op1</div>
-                    <div class="option">op2</div>
-                    <div class="option">op3</div>
-                    <div class="option">op4</div>
+                    <div class="option">option1/राजधानी</div>
+                    <div class="option">option2/राजधानी</div>
+                    <div class="option">option3/राजधानी</div>
+                    <div class="option">option4/राजधानी</div>
                 </div>
-                <div class="buzzer-details hidden"></div>
+                <div class="buzzer-details hidden">
+                    <div class="loader"></div>
+                    <dotlottie-player class="hidden" src="https://lottie.host/6d95b951-89bf-45bb-826d-deea90050468/6qdjzkMV5Y.json" 
+                    background="transparent" style="width:20rem;height:100%" speed="1" loop autoplay></dotlottie-player>
+                    
+                    <p class="hidden"><span>Player &nbsp;</span>Pressed the buzzer!</p>
+                </div>
             </div>
 
             <div class="right-panel">
@@ -150,31 +173,36 @@
         <div class="hide-responses"><i class="fa-solid fa-xmark"></i></div>
         <div class="wrapper">
             <div class="answer"><p>Answer</p></div>
-            <div class="mcq-response-display ">
+            <div class="mcq-response-display">
                 <p>Responses by Participants</p>
-                <div class="item">
-                    <span>01</span>
-                    <span>Shivam Ray</span>
-                    <span>Answer</span>
-                    <span><i class="fa-solid fa-circle-check"></i></span>
-                </div>
-                <div class="item">
-                    <span>02</span>
-                    <span>Vikas</span>
-                    <span>Answer</span>
-                    <span><i class="fa-solid fa-circle-xmark"></i></span>
-                </div>
-                <div class="item">
-                    <span>03</span>
-                    <span>Somnath</span>
-                    <span>Answer</span>
-                    <span><i class="fa-solid fa-comment-slash"></i></span>
-                </div>
+                <table id="responseTable">
+                    <tr>
+                        <td>01</td>
+                        <td>Shivam Ray</td>
+                        <td>Answer</td>
+                        <td><i class="fa-solid fa-circle-check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>02</td>
+                        <td>Vikas</td>
+                        <td>Answer</td>
+                        <td><i class="fa-solid fa-circle-xmark"></i></td>
+                    </tr>
+                    <tr>
+                        <td>03</td>
+                        <td>Somnath</td>
+                        <td>Answer</td>
+                        <td><i class="fa-solid fa-comment-slash"></i></td>
+                    </tr>
+                </table>
             </div>
             <div class="buzzer-response-display active">
-                <p>The answer from <span>Shivam</span> was:</p>
-                <button id="correct-buzzer"><i class="fa-solid fa-circle-check"></i></button>
-                <button id="incorrect-buzzer"><i class="fa-solid fa-circle-xmark"></i></button>
+                <p>The answer from <span>Shivam</span> is :</p>
+            
+                <div class="container">
+                    <dotlottie-player id="correct-buzzer" src="https://lottie.host/7a3a75d6-a3ee-4c2d-9f0a-345ee082871d/7fhJmqtCNM.json" background="transparent" speed="1" style="width: 27rem; height: 27rem" direction="1" playMode="normal" loop autoplay></dotlottie-player>
+                    <dotlottie-player id="incorrect-buzzer" src="https://lottie.host/14e0dee8-c089-4f4c-b297-b244ee72a3ea/pXfx8UgvCR.json" background="transparent" speed="1" style="width: 22rem; height: 22rem;" loop autoplay></dotlottie-player>
+                </div>
             </div>
         </div>
     </div>
@@ -199,5 +227,6 @@
     <script src="../../js/libs/deparam.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/hostGame.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </body>
 </html>

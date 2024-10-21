@@ -15,6 +15,15 @@
     <!-- page stylesheet -->
     <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="../../css/common.css">
+    <style>
+        .main-display .right-panel{
+            justify-content: flex-start;
+            padding-top: 3rem;
+        }
+        .option-panel .option:hover{
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -25,24 +34,44 @@
             <a href="#" class="nav-logo"><img src="../../css/assets/bvp_c.png"></a>
             <div class="header-text">भारत विकास परिषद</div>
         </div>
-        <div class="header-info">
-            <div class="left">
-                <p>Name &nbsp;&nbsp;&nbsp;&nbsp;: <span>00</span></p>
-                <p>Score : <span>00</span></p>
-            </div>
-            <div class="line"></div>
-            <div class="right">
-                <p>Round &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>1/2</span></p>
-                <p>Questions : <span>20</span></p>
-            </div>
-        </div>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>Shivam</td>
+                <td>Round</td>
+                <td>1/2</td>
+            </tr>
+            <tr>
+                <td>Score</td>
+                <td>123</td>
+                <td>Questions</td>
+                <td>20</td>
+            </tr>
+        </table>
     </header>
 
     <main>
         <div class="rotating-image">
             <img src="../../css/assets/floral-1.png" alt="">
         </div>
+        <!-- final leaderboard -->
+        <div class="container" id="app">
+            <div class="leaders">
+                <h2>Final Results</h2>
+                <ul id="topThreeCatsList"></ul>
+            </div>
+            <!-- <div class="board">
+                <h2>Leaderboard</h2>
+                <ul id="allCatsList"></ul>
+            </div> -->
+        </div>
+        <button id="close-game" class="hidden" title="Close-Game"><i class="fa-solid fa-power-off"></i></button>
+
         <section class="main-display flex-section">
+            <div class="loader-wrapper hidden">
+                <div class="loader"></div>
+                <p>Waiting for next question...</p>
+            </div>
             <div class="left-panel">
                 <div class="question-card">
                     <div class="marks-container">
@@ -50,7 +79,7 @@
                         <div class="circle negative">05</div>
                     </div>
                     <div class="que-header">
-                        <div class="circle count">01</div>
+                        <div class="count">Ques No. / प्र. सं. : <span>01</span></div>
                     </div>
                     <div class="que-body">
                         <div class="text">
@@ -74,7 +103,10 @@
                     <div class="option" id="answer1">op2</div>
                     <div class="option" id="answer1">op3</div>
                     <div class="option" id="answer1">op4</div>
-                    <div class="buzzer-btn hidden" id="buzzer-btn">PRESS BUZZER</div>
+                </div>
+                <div class="buzzer-btn hidden" id="buzzer-btn">
+                    <i class="fa-solid fa-bell"></i>
+                    <p>Press Buzzer!</p>
                 </div>
             </div>
             <div class="right-panel">
@@ -84,6 +116,13 @@
             </div>
         </section>
     </main>
+
+    <div class="result-container">
+        <dotlottie-player id="correct-buzzer" src="https://lottie.host/7a3a75d6-a3ee-4c2d-9f0a-345ee082871d/7fhJmqtCNM.json" background="transparent" speed="1" style="width: 27rem; height: 27rem" direction="1" playMode="normal" loop autoplay></dotlottie-player>
+        <p class="first" style="color:#3eac1f">Correct Answer!</p>
+        <dotlottie-player id="incorrect-buzzer" src="https://lottie.host/14e0dee8-c089-4f4c-b297-b244ee72a3ea/pXfx8UgvCR.json" background="transparent" speed="1" style="width: 22rem; height: 22rem;" loop autoplay></dotlottie-player>
+        <p class="second" style="color:#d05a24">Incorrect Answer!</p>
+    </div>
 
     <!-- confirmation box -->
     <div class="div-confirmation-outer" id="confirmationBox">
@@ -96,6 +135,8 @@
         </div>
         </div>
     </div>
+
+    
     
     <div id="toast-container"></div>
 
@@ -105,5 +146,6 @@
     <script src = "../../js/libs/deparam.js"></script>
     <script src="../../js/common.js"></script>
     <script src = "../../js/playerGame.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </body>
 </html>

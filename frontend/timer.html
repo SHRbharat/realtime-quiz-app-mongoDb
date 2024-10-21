@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loader Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+            background-color: white;
+        }
+        .loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background: red; 
+            border-radius: 50%;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 1);
+            overflow: hidden;
+        }
+        .loader .before,
+        .loader .after {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            border-radius: 40%;
+            background: #111;
+            transition: top 1s; /* Smooth transition for position change */
+        }
+        .loader .before {
+            top: -100%; /* Start position at 100% */
+            left: -50%;
+            opacity: 0.8;
+            animation: rotateBefore 12s linear infinite; /* Rotation animation */
+        }
+        .loader .after {
+            top: -100%; /* Start position at 100% */
+            left: -50%;
+            opacity: 0.9;
+            animation: rotateAfter 15s linear infinite; /* Rotation animation */
+        }
+        .timer {
+            position: absolute;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for element size */
+            color: #fff; /* Text color */
+            font-size: 24px; /* Timer font size */
+            font-weight: bold; /* Bold text */
+        }
+        @keyframes rotateBefore {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotateAfter {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loader">
+    <div class="before"></div>
+    <div class="after"></div>
+    <div class="timer" id="timer">60</div> <!-- Timer element -->
+</div>
+<h1>Bhai aise hi mere papo ka gharha bhi bhar rhaa hain</h1>
+<p>My first paragraph.</p>
+
+<!-- JavaScript -->
+<script>
+    // Initialize positions
+    let beforeTop = -100; // Start position for the before div
+    let afterTop = -100;  // Start position for the after div
+    let countdown = 60; // Timer countdown in seconds
+
+    // Function to update positions
+    function updatePositions() {
+        // Move the 'before' div down
+        if (beforeTop < 0) {
+            beforeTop -= 1.8; // Decrement downwards
+            document.querySelector('.before').style.top = beforeTop + '%';
+        } else {
+            // Reset to top when it reaches the bottom
+            beforeTop = -100;
+        }
+        
+        // Move the 'after' div down
+        if (afterTop < 0) {
+            afterTop -= 1.8; // Decrement downwards at a different rate
+            document.querySelector('.after').style.top = afterTop + '%';
+        } else {
+            // Reset to top when it reaches the bottom
+            afterTop = -100;
+        }
+
+        // Update the timer
+        if (countdown > 0) {
+            countdown--; // Decrement the timer
+            document.getElementById('timer').textContent = countdown; // Update the display
+        } else {
+            clearInterval(interval); // Stop the interval when countdown reaches 0
+        }
+    }
+
+    // Call updatePositions every second
+    const interval = setInterval(updatePositions, 1000);
+</script>
+
+</body>
+</html>
