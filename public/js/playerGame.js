@@ -32,15 +32,15 @@ socket.on('connect', function() {
     document.querySelector("#app").style.display = 'none'
     //Tell server that it is player connection from game view , asks for palyer data
     socket.emit('player-join-game', params.id);
-    
+    console.log("connecting...")
     //display loader , waiting for next question
-    startLoader()
+    // startLoader()
 });
 
 //receives player and game data , update the ui (only once => player-join-game)
 //data = {playerData{hostId,playerId,name} , time , questionData{type,que_hi,que_en,op1-op4}}
 socket.on('playerGameData', function(data){
-    stopLoader()
+    // stopLoader()
     console.log("playerGameData :" , data);
 
     currentQuestionIndex++
@@ -80,7 +80,7 @@ socket.on('playerGameData', function(data){
 //receive questions after the first one, data = {questionData}
 socket.on('nextQuestionPlayer', function(data){
     //new round has started
-    stopLoader()
+    // stopLoader()
     if( (round.rounds == 2 && currentQuestionIndex == params.no_mcq) || 
         (round.rounds == 3 && currentQuestionIndex == params.no_buzzer)){
         currentQuestionIndex = 0
@@ -217,9 +217,10 @@ socket.on('questionOver', function(data){
     //         console.log("NO RESPONSE - buzzer")
     //     }
     // }
-    setTimeout(function() {
-        startLoader();
-    }, 5000);
+    // setTimeout(function() {
+    //     console.log("start loader , questionOveer")
+    //     startLoader();
+    // }, 5000);
 });
 
 //after updating scores from the host
@@ -251,9 +252,10 @@ socket.on("buzzerQuestionOver",(data)=>{
     console.log("Updated Marks : ",score.mcq , score.buzzer)
     headerInfo[2].textContent = score.mcq + score.buzzer
     // socket.emit('getScore');
-    setTimeout(function() {
-        startLoader();
-    }, 5000);
+    // setTimeout(function() {
+    //     console.log("start loader , buzzer question over")
+    //     startLoader();
+    // }, 5000);
 })
 
 // socket.on('newScore', function(data){
@@ -284,6 +286,7 @@ socket.on('GameOver', function (data) {
         renderTopThree([topThree[2],topThree[0],topThree[1]]);
         // renderAllPlayers(data);
     }, 2000); 
+    // stopLoader()
 });
 
 socket.on('hostDisconnect', function(){
@@ -506,6 +509,7 @@ const rightPanel = document.querySelector('.right-panel');
 
 // Function to start the loader
 function startLoader() {
+    console.log("startLoader")
     leftPanel.style.display = 'none';
     rightPanel.style.display = 'none';
     loaderWrapper.style.display = 'block';
@@ -513,6 +517,7 @@ function startLoader() {
 
 // Function to stop the loader
 function stopLoader() {
+    console.log("stopLoader")
     leftPanel.style.display = 'block';
     rightPanel.style.display = 'flex';
     loaderWrapper.style.display = 'none';
