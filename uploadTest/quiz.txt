@@ -1,0 +1,85 @@
+[    
+	{
+        "type": "mcq",
+        "que_en": "How many couplets (slokas) are there in Ramayana?",
+        "que_hi": "रामायण में कितने दोहे (श्लोक) हैं?",
+        "op1": "576",
+        "op2": "24,000",
+        "op3": "81,000",
+        "op4": "11,000",
+        "correct": 2
+    },
+    {
+        "type": "mcq",
+        "que_en": "Identify this famous Indian monument from the image.",
+        "que_hi": "इस छवि से इस प्रसिद्ध भारतीय स्मारक की पहचान करें।",
+        "op1": "Sun Temple, Konark / सूर्य मंदिर, कोणार्क",
+        "op2": "Rani Ki Vav / रानी की वाव",
+        "op3": "Chhatrapati Shivaji Terminus / छत्रपति शिवाजी टर्मिनस",
+        "op4": "Victoria Memorial / विक्टोरिया मेमोरियल",
+        "correct": 1,
+        "media": {
+            "image": "konark_temple.jpg"
+        }
+    },
+    {
+        "type": "mcq",
+        "que_en": "Who is depicted in this image, known for his role in the Indian independence movement?",
+        "que_hi": "इस छवि में कौन चित्रित है, जो भारतीय स्वतंत्रता आंदोलन में अपने योगदान के लिए जाने जाते हैं?",
+        "op1": "Dr. Rajendra Prasad / डॉ. राजेन्द्र प्रसाद",
+        "op2": "Bal Gangadhar Tilak / बाल गंगाधर तिलक",
+        "op3": "Lal Bahadur Shastri / लाल बहादुर शास्त्री",
+        "op4": "Chandra Shekhar Azad / चंद्रशेखर आज़ाद",
+        "correct": 2,
+        "media": {
+            "image": "tilak.jpg"
+        }
+    },
+    {
+        "type": "mcq",
+        "que_en": "Identify this revolutionary leader from the image.",
+        "que_hi": "इस छवि से इस क्रांतिकारी नेता की पहचान करें।",
+        "op1": "Sukhdev Thapar / सुखदेव थापर",
+        "op2": "Vijay Kumar Malhotra / विजय कुमार मल्होत्रा",
+        "op3": "Chandra Shekhar Azad / चंद्रशेखर आज़ाद",
+        "op4": "Rani Lakshmibai / रानी लक्ष्मीबाई",
+        "correct": 1,
+        "media": {
+            "image": "sukhdev.jpg"
+        }
+    },
+	{
+        "type": "mcq",
+        "que_en": "Listen to the national anthem and identify the language in which it is sung.",
+        "que_hi": "राष्ट्रीय गान सुनें और यह किस भाषा में गाया गया है, उसे पहचानें।",
+        "op1": "Hindi / हिंदी",
+        "op2": "Bengali / बंगाली",
+        "op3": "Tamil / तमिल",
+        "op4": "Punjabi / पंजाबी",
+        "correct": 2,
+        "media": {
+            "audio": "national_anthem_bengali.mp3"
+        }
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Listen to the musical instrument and identify it.<<audio>>",
+        "que_hi": "संगीत वाद्ययंत्र को सुनें और इसे पहचानें।",
+        "correct": "Sitar / सितार",
+        "media": {
+            "audio": "sitar_sound.mp3"
+        }
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Ayodhya was the capital of which Janpada?",
+        "que_hi": "अयोध्या किस जनपद की राजधानी थी?",
+        "correct": "Kaushal / कौशल"
+    },
+    {
+        "type": "buzzer",
+        "que_en": "Which historic event is commemorated on April 13, 1919 in India?",
+        "que_hi": "भारत में 13 अप्रैल, 1919 को किस ऐतिहासिक घटना की स्मृति मनाई जाती है?",
+        "correct": "Jallianwala Bagh massacre/जलियांवाला बाग हत्याकांड"
+    }
+]
