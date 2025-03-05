@@ -8,7 +8,7 @@ const mcq_arr = [];
 const buzzer_arr = [];
 
 //temporary
-document.querySelector(".info-btn").addEventListener('click',openPopup);
+// document.querySelector(".info-btn").addEventListener('click',openPopup);
 document.getElementById("gameId").value = gameId
 
 document
@@ -56,37 +56,39 @@ function updateDatabase() {
 
 //game created , now upload the media files if present
 socket.once("gameId", (id) => {
+  console.log("game id:",id)
   if (fileFormatValid && (containsMedia.image > 0 || containsMedia.audio > 0)) {
     openPopup();
     gameId = id;
-    if (containsMedia.image === 0) {
-      document
-        .querySelector("#media-form .input-grp:first-child")
-        .classList.add("disabled");
-      const imagePicker = document.querySelector("#image-picker");
-      imagePicker.disabled = true;
-      imagePicker.removeAttribute("required");
-      imagePicker.classList.add("disabled");
-    }
-    if (containsMedia.audio === 0) {
-      document
-        .querySelector("#media-form .input-grp:nth-child(2)")
-        .classList.add("disabled");
-      const audioPicker = document.querySelector("#audio-picker");
-      audioPicker.disabled = true;
-      audioPicker.removeAttribute("required");
-      audioPicker.classList.add("disabled");
-    }
+    document.querySelector(".popup-window #gameId").value = gameId;
+    // if (containsMedia.image === 0) {
+    //   document
+    //     .querySelector("#media-form .input-grp:first-child")
+    //     .classList.add("disabled");
+    //   const imagePicker = document.querySelector("#image-picker");
+    //   imagePicker.disabled = true;
+    //   imagePicker.removeAttribute("required");
+    //   imagePicker.classList.add("disabled");
+    // }
+    // if (containsMedia.audio === 0) {
+    //   document
+    //     .querySelector("#media-form .input-grp:nth-child(2)")
+    //     .classList.add("disabled");
+    //   const audioPicker = document.querySelector("#audio-picker");
+    //   audioPicker.disabled = true;
+    //   audioPicker.removeAttribute("required");
+    //   audioPicker.classList.add("disabled");
+    // }
   }
 });
 
 //send host to his lobby screen , starting the game
-socket.on("startGameFromCreator", function (id) {
-  console.log("redirecting : ", id);
-  setTimeout(function () {
-    window.location.href = "../../host/?id=" + id;
-  }, 5000);
-});
+// socket.on("startGameFromCreator", function (id) {
+//   console.log("redirecting : ", id);
+//   setTimeout(function () {
+//     window.location.href = "../../host/?id=" + id;
+//   }, 5000);
+// });
 
 //Called when user wants to exit quiz creator
 function cancelQuiz() {
@@ -252,13 +254,13 @@ document.getElementById("cancel-media").addEventListener("click", () => {
 });
 
 // Handle Submit (trigger toast)
-document.getElementById("submit-media").addEventListener("click", (e) => {
-  // e.preventDefault();
+// document.getElementById("submit-media").addEventListener("click", (e) => {
+//   // e.preventDefault();
 
-  showToast("Media submitted successfully!");
-  // popupOverlay.classList.add("hidden");
-  // clearPreviews(); // Clear preview on close
-});
+//   showToast("Media submitted successfully!");
+//   // popupOverlay.classList.add("hidden");
+//   // clearPreviews(); // Clear preview on close
+// });
 
 function previewFiles(files, previewElement, type) {
   previewElement.innerHTML = ""; // Clear previous preview
@@ -318,39 +320,43 @@ form.addEventListener("input", checkFormValidity);
 
 
 //handling media-form submission
-// const mediaForm = document.getElementById('media-form');
-// mediaForm.addEventListener('submit', function(event) {
-//     event.preventDefault();
+const mediaForm = document.getElementById('media-form');
+mediaForm.addEventListener('submit', function (event) {
+  event.preventDefault();
 
-//     const formData = new FormData(mediaForm); 
-//     // const gameId = document.getElementById('gameId').value; 
-//     formData.append('gameId', gameId); 
+  const formData = new FormData(mediaForm);
 
-//     // Send form data via fetch
-//     fetch('/upload', {
-//         method: 'POST',
-//         body: formData
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//           console.log(response.text())
-//             return response.text(); // Parse response as text
-//         }
-//         throw new Error('Failed to upload files');
-//     })
-//     .then(data => {
-//         // Log the success message and display it on the page
-//         console.log('Files uploaded successfully:', data);
-//         // uploadStatus.textContent = "Files uploaded successfully!";
-//         // uploadStatus.style.color = "green";
-//     })
-//     .catch(error => {
-//         // Handle errors
-//         console.error('Error uploading files:', error);
-//         // uploadStatus.textContent = "Error uploading files.";
-//         // uploadStatus.style.color = "red";
-//     });
-// });
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
+
+  // Send form data via fetch
+  fetch('/upload', {
+      method: 'POST',
+      body: formData,
+  })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Failed to upload files');
+          }
+          return response.text(); // Parse response as text
+      })
+      .then(data => {
+          // Log the success message and display it
+          console.log('Files uploaded successfully:', data);
+          showToast("Media submitted successfully!");
+
+          //close popup
+          popupOverlay.classList.add("hidden");
+          clearPreviews(); // Clear preview on close
+      })
+      .catch(error => {
+          // Handle errors
+          console.error('Error uploading files:', error);
+          showToast("Failed to upload!", "error");
+      });
+});
+
 
 
 //validate and read the file

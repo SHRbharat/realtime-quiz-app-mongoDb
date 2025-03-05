@@ -24,35 +24,76 @@ var { MongoClient, ObjectId } = require("mongodb");
 var mongoose = require("mongoose");
 var url = "mongodb://localhost:27017/";
 
-app.use(express.static(publicPath));
+
 
 // Multer configuration for file uploads
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     const uploadDir = path.join(publicPath, "uploads");
+//     if (!fs.existsSync(uploadDir)) {
+//       fs.mkdirSync(uploadDir);
+//     }
+//     cb(null, uploadDir);
+//   },
+//   filename: function (req, file, cb) {
+//     const userId = req.body.gameId;
+//     cb(null, `${userId}_${file.originalname}`);
+//   },
+// });
+
+// Multer storage configuration
+const uploadPath = path.join(publicPath, "uploads");
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadDir = path.join(publicPath, "uploads");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
-    }
-    cb(null, uploadDir);
+  destination: (req, file, cb) => {
+      cb(null, uploadPath);
   },
-  filename: function (req, file, cb) {
-    const userId = req.body.gameId;
-    cb(null, `${userId}_${file.originalname}`);
-  },
+  filename: (req, file, cb) => {
+      const userId = req.body.gameId || 'unknownUser'; // Fallback to 'unknownUser' if gameId is not provided
+      const originalName = file.originalname;
+      console.log('Saving file to:', uploadPath , `${userId}_${originalName}`);
+      // const sanitizedOriginalName = originalName.replace(/\s+/g, '_'); // Replace spaces with underscores
+      cb(null, `${userId}_${originalName}`);
+  }
 });
 
 const upload = multer({ storage: storage });
 
-// File upload handler
-app.post(
-  "/upload",
-  upload.fields([{ name: "images[]" }, { name: "audios[]" }]),
-  (req, res) => {
-    console.log("Files uploaded:", req.files);
-    res.send("Files uploaded successfully.");
-  }
-);
+// Middleware for parsing form-data
+app.use(express.urlencoded({ extended: true }));
 
+// Route for handling uploads
+app.post('/upload', upload.fields([
+    { name: 'image-picker', maxCount: 10 }, 
+    { name: 'audio-picker', maxCount: 10 }
+]), (req, res) => {
+    try {
+        const files = req.files;
+        console.log('Request body (hangler):', req.body);
+        console.log('Uploaded files:', req.files);
+
+        if (!files || (Object.keys(files).length === 0)) {
+            return res.status(400).send('No files were uploaded.');
+        }
+
+        console.log('Files uploaded successfully:', files);
+        res.status(200).send('Files uploaded successfully.');
+    } catch (error) {
+        console.error('Error handling file upload:', error);
+        res.status(500).send('Error uploading files.');
+    }
+});
+
+// const upload = multer({ storage: storage });
+// // File upload handler
+// app.post(
+//   "/upload",
+//   upload.fields([{ name: "image-picker" }, { name: "audio-picker" }]),
+//   (req, res) => {
+//     console.log("Files uploaded:", req.files);
+//     res.send("Files uploaded successfully.");
+//   }
+// );
+app.use(express.static(publicPath));
 //Starting server on port 3000
 server.listen(3000, () => {
   console.log("Server started on port 3000");
@@ -128,9 +169,9 @@ io.on("connection", (socket) => {
         db.close();
         console.log("Game ID:", res.insertedId.toString());
 
-        // socket.emit("gameId",res.insertedId.toString())
+        socket.emit("gameId",res.insertedId.toString())
         //start the game immediately
-        socket.emit("startGameFromCreator", res.insertedId.toString()); // Use the insertedId as the quiz ID
+        // socket.emit("startGameFromCreator", res.insertedId.toString()); // Use the insertedId as the quiz ID
       });
     });
   });

@@ -26,7 +26,7 @@
             <div class="header-text">भारत विकास परिषद</div>
         </div>
         <div class="button-container">
-            <a href="create/" class="text-inter-lg" id="host">Host a Game!</a>
+            <a href="../../host/" class="text-inter-lg" id="host">Host a Game!</a>
             <button class="nav-button primary-button text-inter-lg" id="createGame">Create Game <i
                     class="fa-solid fa-arrow-right"></i></button>
         </div>
@@ -90,12 +90,12 @@
                 </div>
                 <div class="input-grp">
                     <label for="image-picker">Upload images files</label>
-                    <input type="file" id="image-picker" accept="image/*" multiple required/>
+                    <input type="file" id="image-picker" name="image-picker" accept="image/*" multiple />
                     <div id="image-preview" class="preview"></div>
                 </div>
                 <div class="input-grp">
                     <label for="audio-picker">Upload audio files</label>
-                    <input type="file" id="audio-picker" accept="audio/*" multiple required/>
+                    <input type="file" id="audio-picker" name="audio-picker" accept="audio/*" multiple />
                     <div id="audio-preview" class="preview"></div>
                 </div>
                 <div class="button-grp">
@@ -116,7 +116,7 @@
     <script src="../../socket.io/socket.io.js"></script>
     <script src="../../js/common.js"></script>
     <script src="../../js/quizCreator.js"></script>
-    <script>
+    <!-- <script>
             document.getElementById('media-form').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent the default form submission behavior
 
@@ -160,7 +160,7 @@ document.getElementById('cancel-media').addEventListener('click', () => {
     document.getElementById('media-form').reset();  // Clear the form inputs
 });
 
-    </script>
+    </script> -->
 </body>
 
 </html>
